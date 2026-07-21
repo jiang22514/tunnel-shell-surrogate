@@ -1,7 +1,11 @@
 # Shell-reduced surrogate for frost-season tunnel lining internal forces — release package
 
 Companion to: 'A shell-reduced surrogate for frost-season thermal internal
-forces in cold-region tunnel linings across section geometries'.
+forces in cold-region tunnel linings across section geometries'
+(submitted to Tunnelling and Underground Space Technology).
+
+License: MIT (see LICENSE). A tagged release of this repository will be
+archived on Zenodo with a DOI upon acceptance of the paper.
 
 - data/: reference profiles (N/M/Q + strain/temperature labels, 100 sections,
   200 landmark-aligned stations; profiles_NM.npz, tprofiles_T.npz) and the
