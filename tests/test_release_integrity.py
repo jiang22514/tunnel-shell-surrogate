@@ -106,6 +106,27 @@ class ReleaseIntegrityTest(unittest.TestCase):
         ignored = (ROOT / ".gitignore").read_text(encoding="utf-8").splitlines()
         self.assertIn(".private_release_audit/", ignored)
 
+    def test_data_dictionary_uses_base_si_units_for_resultants(self) -> None:
+        """Protect the published numeric-unit contract for shell resultants."""
+        dictionary = (ROOT / "DATA_DICTIONARY.md").read_text(encoding="utf-8")
+
+        self.assertIn("force/moment resultant arrays use base-SI numeric values", dictionary)
+        self.assertNotIn("MPa m", dictionary)
+        self.assertNotIn("MPa m^2", dictionary)
+
+        expected_units = {
+            "profiles_NM.npz:N": "Pa m",
+            "profiles_NM.npz:Q": "Pa m",
+            "axial_force_truth": "Pa m",
+            "predicted_axial_force": "Pa m",
+            "profiles_NM.npz:M": "Pa m^2",
+            "bending_moment_truth": "Pa m^2",
+            "predicted_bending_moment_direct": "Pa m^2",
+        }
+        for field, unit in expected_units.items():
+            row = next(line for line in dictionary.splitlines() if field in line)
+            self.assertIn(f"| {unit} |", row, field)
+
     def test_write_checksums_reproduces_the_checked_in_file(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_directory:
             output_path = Path(temporary_directory) / "SHA256SUMS"
