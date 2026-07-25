@@ -34,7 +34,6 @@ FORBIDDEN_SUFFIXES = {
 }
 FORBIDDEN_FILENAMES = {"genieshan", "full_field", "full-field", "_t3"}
 INTERNAL_DIRECTORY_NAMES = {".git", ".private_release_audit", ".superpowers", "superpowers", "__pycache__", "source_figures"}
-TEXT_SUFFIXES = {".cff", ".cfg", ".ini", ".json", ".md", ".py", ".rst", ".toml", ".tsv", ".txt", ".yaml", ".yml"}
 PRIVATE_PATH_PATTERN = re.compile("(?:/" + "home/|/mnt/[a-z]/|[A-Za-z]:\\\\Users\\\\)")
 CREDENTIAL_PATTERN = re.compile(
     r"(?i)\b(?:api[_-]?key|access[_-]?token|secret|password)\b\s*[:=]\s*['\"]?[A-Za-z0-9_./+=-]{8,}"
@@ -193,12 +192,6 @@ def _release_paths(root: Path) -> list[Path]:
     )
 
 
-def _release_text_paths(root: Path) -> list[Path]:
-    return [
-        path for path in _release_paths(root)
-        if not path.suffix or path.suffix.lower() in TEXT_SUFFIXES
-    ]
-
 def _safety_errors(root: Path) -> list[str]:
     errors: list[str] = []
     for path in _release_paths(root):
@@ -209,9 +202,12 @@ def _safety_errors(root: Path) -> list[str]:
             or any(item in name for item in FORBIDDEN_FILENAMES)
         ):
             errors.append(f"forbidden release artifact: {relative}")
-    for path in _release_text_paths(root):
+    for path in _release_paths(root):
         relative = path.relative_to(root).as_posix()
-        text = path.read_text(encoding="utf-8", errors="replace")
+        try:
+            text = path.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            continue
         if PRIVATE_PATH_PATTERN.search(text):
             errors.append(f"private absolute path in {relative}")
         if CREDENTIAL_PATTERN.search(text):

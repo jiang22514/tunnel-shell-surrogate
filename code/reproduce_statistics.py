@@ -225,7 +225,7 @@ def _analysis_json_errors(path: Path, payload: object) -> list[str]:
             if not invalid:
                 invalid |= any(
                     not _mapping_has_exact_keys(case, case_keys)
-                    or not isinstance(case["case_index"], int)
+                    or type(case["case_index"]) is not int
                     or not 0 <= case["case_index"] < 100
                     or not all(_is_finite_number(case[key]) for key in case_keys - {"case_index"})
                     for case in cases

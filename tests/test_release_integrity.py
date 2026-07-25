@@ -192,5 +192,30 @@ class ReleaseIntegrityTest(unittest.TestCase):
 
 
 
+    def test_analysis_json_rejects_boolean_case_index(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            release = self._copy_release_tree(temporary_directory)
+            path = release / "data" / "analysis" / "baseline_per_case.json"
+            payload = json.loads(path.read_text(encoding="utf-8"))
+            payload["cases"][0]["case_index"] = True
+            path.write_text(json.dumps(payload), encoding="utf-8")
+            self._assert_finding(release, "baseline_per_case.json: invalid schema")
+
+    def test_safety_scan_reads_all_utf8_text_extensions(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            release = self._copy_release_tree(temporary_directory)
+            fixtures = {
+                release / "docs" / "leak.csv": "api_" + "key = abcdefgh1234\n",
+                release / "script.sh": "C:" + "\\Users\\alice\\work\n",
+            }
+            for path, contents in fixtures.items():
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(contents, encoding="utf-8")
+            findings = audit_release(release)
+            self.assertIn("credential-like text in docs/leak.csv", findings)
+            self.assertIn("private absolute path in script.sh", findings)
+
+
+
 if __name__ == "__main__":
     unittest.main()
