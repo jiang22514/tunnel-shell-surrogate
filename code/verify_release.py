@@ -28,12 +28,32 @@ REQUIRED_AUTHORS = [
     "Zhenggui Hu",
 ]
 MANIFEST_HEADER = ["path", "bytes", "sha256", "category", "description"]
-FORBIDDEN_SUFFIXES = {".cae", ".odb", ".pkl", ".pickle", ".rpy"}
-FORBIDDEN_FILENAMES = {"genieshan", "full_field", "full-field"}
-PRIVATE_PATH_PATTERN = re.compile(r"(?:/home/|/mnt/[a-z]/|[A-Za-z]:\\\\Users\\\\)")
+FORBIDDEN_SUFFIXES = {
+    ".cae", ".odb", ".inp", ".jnl", ".rpy", ".lck", ".sim", ".prt",
+    ".step", ".stp", ".iges", ".igs", ".sat", ".dwg", ".dxf", ".pkl", ".pickle",
+}
+FORBIDDEN_FILENAMES = {"genieshan", "full_field", "full-field", "_t3"}
+INTERNAL_DIRECTORY_NAMES = {".git", ".private_release_audit", ".superpowers", "superpowers", "__pycache__", "source_figures"}
+TEXT_SUFFIXES = {".cff", ".cfg", ".ini", ".json", ".md", ".py", ".rst", ".toml", ".tsv", ".txt", ".yaml", ".yml"}
+PRIVATE_PATH_PATTERN = re.compile("(?:/" + "home/|/mnt/[a-z]/|[A-Za-z]:\\\\Users\\\\)")
 CREDENTIAL_PATTERN = re.compile(
-    r"(?i)\\b(?:api[_-]?key|access[_-]?token|secret|password)\\b\\s*[:=]\\s*['\"]?[A-Za-z0-9_./+=-]{8,}"
+    r"(?i)\b(?:api[_-]?key|access[_-]?token|secret|password)\b\s*[:=]\s*['\"]?[A-Za-z0-9_./+=-]{8,}"
 )
+CORE_NPY_SCHEMA = {"ct_params.npy": ((100, 5), "float64")}
+CORE_NPZ_SCHEMAS = {
+    "profiles_NM.npz": {
+        "N": ((100, 200), "float64"), "M": ((100, 200), "float64"),
+        "Q": ((100, 200), "float64"), "eps_m": ((100, 200), "float64"),
+        "slope_ss": ((100, 200), "float64"), "enn_c0": ((100, 200), "float64"),
+        "enn_slope": ((100, 200), "float64"), "N_hooke": ((100, 200), "float64"),
+        "M_hooke": ((100, 200), "float64"), "N_grid": ((100, 200), "float64"),
+        "M_grid": ((100, 200), "float64"), "valid": ((100, 200), "bool"),
+        "sc": ((200,), "float64"), "perim": ((100,), "float64"), "lm_tgt": ((4,), "float64"),
+    },
+    "tprofiles_T.npz": {
+        "T_c0": ((100, 200), "float64"), "T_slope": ((100, 200), "float64"),
+    },
+}
 
 
 def _public_artifact_paths(root: Path) -> list[Path]:
@@ -130,60 +150,73 @@ def _manifest_errors(root: Path) -> list[str]:
 
 
 def _core_array_errors(root: Path) -> list[str]:
-    expected = {
-        "ct_params.npy": ((100, 5), "float64"),
-        "profiles_NM.npz": None,
-        "tprofiles_T.npz": None,
-    }
     errors: list[str] = []
-    for name, schema in expected.items():
+    for name, (shape, dtype) in CORE_NPY_SCHEMA.items():
         path = root / "data" / name
         if not path.is_file():
             errors.append(f"missing data file: {name}")
             continue
         try:
-            loaded = np.load(path, allow_pickle=False)
-            if schema is not None:
-                if (loaded.shape, str(loaded.dtype)) != schema:
-                    errors.append(f"{name}: unexpected shape or dtype")
-                continue
-            with loaded:
-                if name == "profiles_NM.npz" and (
-                    loaded["N"].shape != (100, 200) or loaded["valid"].dtype != np.dtype(bool)
-                ):
-                    errors.append(f"{name}: unexpected profile schema")
-                if name == "tprofiles_T.npz" and (
-                    loaded["T_c0"].shape != (100, 200) or loaded["T_slope"].shape != (100, 200)
-                ):
-                    errors.append(f"{name}: unexpected temperature schema")
-        except (OSError, KeyError, ValueError) as error:
+            array = np.load(path, allow_pickle=False)
+            if array.shape != shape or str(array.dtype) != dtype:
+                errors.append(f"{name}: schema mismatch")
+            if array.dtype.kind == "f" and not np.isfinite(array).all():
+                errors.append(f"{name}: contains non-finite values")
+        except (OSError, ValueError) as error:
+            errors.append(f"{name}: {error}")
+    for name, schema in CORE_NPZ_SCHEMAS.items():
+        path = root / "data" / name
+        if not path.is_file():
+            errors.append(f"missing data file: {name}")
+            continue
+        try:
+            with np.load(path, allow_pickle=False) as archive:
+                if set(archive.files) != set(schema):
+                    errors.append(f"{name}: schema mismatch")
+                for key, (shape, dtype) in schema.items():
+                    if key not in archive.files:
+                        continue
+                    array = archive[key]
+                    if array.shape != shape or str(array.dtype) != dtype:
+                        errors.append(f"{name}: schema mismatch")
+                    if array.dtype.kind == "f" and not np.isfinite(array).all():
+                        errors.append(f"{name}:{key} contains non-finite values")
+        except (OSError, ValueError) as error:
             errors.append(f"{name}: {error}")
     return errors
 
 
-def _release_text_paths(root: Path) -> list[Path]:
-    paths = [
-        root / name
-        for name in ("README.md", "CITATION.cff", "DATA_DICTIONARY.md", "LICENSE-DATA", "MANIFEST.tsv", "SHA256SUMS", "requirements.txt")
-    ]
-    paths.extend(path for path in (root / "code").glob("*.py") if path.name != "verify_release.py")
-    return [path for path in paths if path.is_file()]
+def _release_paths(root: Path) -> list[Path]:
+    return sorted(
+        path for path in root.rglob("*")
+        if path.is_file() and not any(part in INTERNAL_DIRECTORY_NAMES for part in path.relative_to(root).parts)
+    )
 
+
+def _release_text_paths(root: Path) -> list[Path]:
+    return [
+        path for path in _release_paths(root)
+        if not path.suffix or path.suffix.lower() in TEXT_SUFFIXES
+    ]
 
 def _safety_errors(root: Path) -> list[str]:
     errors: list[str] = []
-    for path in _public_artifact_paths(root):
+    for path in _release_paths(root):
+        relative = path.relative_to(root).as_posix()
         name = path.name.lower()
-        if path.suffix.lower() in FORBIDDEN_SUFFIXES or any(item in name for item in FORBIDDEN_FILENAMES):
-            errors.append(f"forbidden release artifact: {path.relative_to(root)}")
+        if (
+            path.suffix.lower() in FORBIDDEN_SUFFIXES
+            or any(item in name for item in FORBIDDEN_FILENAMES)
+        ):
+            errors.append(f"forbidden release artifact: {relative}")
     for path in _release_text_paths(root):
+        relative = path.relative_to(root).as_posix()
         text = path.read_text(encoding="utf-8", errors="replace")
         if PRIVATE_PATH_PATTERN.search(text):
-            errors.append(f"private absolute path in {path.relative_to(root)}")
+            errors.append(f"private absolute path in {relative}")
         if CREDENTIAL_PATTERN.search(text):
-            errors.append(f"credential-like text in {path.relative_to(root)}")
+            errors.append(f"credential-like text in {relative}")
     return errors
-
 
 def audit_release(root: Path) -> list[str]:
     """Return release-integrity findings without modifying *root*."""

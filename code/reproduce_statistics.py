@@ -47,20 +47,54 @@ TEMPERATURE_KEYS = {
 }
 
 
+PRIMARY_DTYPES = {
+    "test_indices": "int64", "station_coordinates": "float64",
+    "valid_mask": "bool", "comparison_mask": "bool",
+    "axial_force_truth": "float64", "bending_moment_truth": "float64",
+    "axial_force_prediction": "float32", "bending_moment_prediction_direct": "float32",
+    "axial_force_prediction_strain_route": "float64",
+    "bending_moment_prediction_strain_route": "float64",
+    "midplane_strain_prediction": "float32", "slope_ss_prediction": "float32",
+    "enn_c0_prediction": "float32", "enn_slope_prediction": "float32",
+    "axial_force_relative_l2_pct": "float64",
+    "bending_moment_relative_l2_pct": "float64",
+    "slope_ss_relative_l2_pct": "float64",
+    "baseline_slope_ss_relative_l2_pct": "float64",
+}
+SHELL_DTYPES = {
+    "test_indices": "int64", "station_coordinates": "float64",
+    "predicted_midplane_strain": "float32", "predicted_slope_ss": "float32",
+    "predicted_enn_c0": "float32", "predicted_enn_slope": "float32",
+    "predicted_axial_force": "float32", "predicted_bending_moment_direct": "float32",
+}
+TEMPERATURE_DTYPES = {
+    "test_indices": "int64", "station_coordinates": "float64",
+    "predicted_temperature_c0": "float32", "predicted_temperature_slope": "float32",
+}
+
+
+def _schema_for_keys(required_keys: set[str]) -> dict[str, str]:
+    if required_keys == PRIMARY_KEYS:
+        return PRIMARY_DTYPES
+    if required_keys == SHELL_KEYS:
+        return SHELL_DTYPES
+    if required_keys == TEMPERATURE_KEYS:
+        return TEMPERATURE_DTYPES
+    raise ValueError("unknown analysis archive schema")
+
+
 def _load_npz(path: Path, required_keys: set[str]) -> dict[str, np.ndarray]:
+    expected_dtypes = _schema_for_keys(required_keys)
     with np.load(path, allow_pickle=False) as archive:
         if set(archive.files) != required_keys:
-            raise ValueError(
-                f"{path} has unexpected keys: {sorted(archive.files)}"
-            )
+            raise ValueError(f"{path}: schema mismatch (unexpected keys)")
         arrays = {key: archive[key] for key in archive.files}
     for key, array in arrays.items():
-        if array.dtype.kind not in "biuf":
-            raise TypeError(f"{path}:{key} has unsafe dtype {array.dtype}")
+        if str(array.dtype) != expected_dtypes[key]:
+            raise TypeError(f"{path}:{key} has dtype {array.dtype}, expected {expected_dtypes[key]}")
         if array.dtype.kind == "f" and not np.isfinite(array).all():
             raise ValueError(f"{path}:{key} contains non-finite values")
     return arrays
-
 
 def _relative_l2_percent(
     prediction: np.ndarray, truth: np.ndarray, mask: np.ndarray
@@ -109,12 +143,16 @@ def _array_structure_errors(
     errors: list[str] = []
     test_indices = arrays["test_indices"]
     stations = arrays["station_coordinates"]
-    if test_indices.ndim != 1 or test_indices.size == 0:
-        errors.append(f"{path}: test_indices must be a non-empty 1D array")
-        return errors
-    if stations.ndim != 1 or stations.size == 0:
-        errors.append(f"{path}: station_coordinates must be a non-empty 1D array")
-        return errors
+    if test_indices.shape != (20,):
+        errors.append(f"{path}: test_indices must have shape (20,)")
+    if np.any(test_indices < 0) or np.any(test_indices >= 100):
+        errors.append(f"{path}: test_indices must be in [0, 100)")
+    if len(np.unique(test_indices)) != len(test_indices):
+        errors.append(f"{path}: test_indices must be unique")
+    if stations.shape != (200,):
+        errors.append(f"{path}: station_coordinates must have shape (200,)")
+    if len(stations) > 1 and not np.all(np.diff(stations) > 0):
+        errors.append(f"{path}: station_coordinates must be strictly increasing")
     profile_shape = (len(test_indices), len(stations))
     if required_keys == PRIMARY_KEYS:
         profile_keys = PRIMARY_KEYS - {
@@ -131,14 +169,10 @@ def _array_structure_errors(
         vector_keys = set()
     for key in profile_keys:
         if arrays[key].shape != profile_shape:
-            errors.append(
-                f"{path}: {key} has shape {arrays[key].shape}, expected {profile_shape}"
-            )
+            errors.append(f"{path}: {key} has shape {arrays[key].shape}, expected {profile_shape}")
     for key in vector_keys:
         if arrays[key].shape != (len(test_indices),):
-            errors.append(
-                f"{path}: {key} has shape {arrays[key].shape}, expected {(len(test_indices),)}"
-            )
+            errors.append(f"{path}: {key} has shape {arrays[key].shape}, expected {(len(test_indices),)}")
     return errors
 
 
@@ -156,13 +190,82 @@ def _archive_group_errors(
             continue
         if not np.array_equal(arrays["test_indices"], reference["test_indices"]):
             errors.append(f"{path}: test_indices differ from {reference_path}")
-        if arrays["station_coordinates"].shape != reference["station_coordinates"].shape:
-            errors.append(f"{path}: station_coordinates shape differs from {reference_path}")
+        if not np.array_equal(arrays["station_coordinates"], reference["station_coordinates"]):
+            errors.append(f"{path}: station_coordinates differ from {reference_path}")
     return errors
 
 
+def _is_finite_number(value: object) -> bool:
+    return isinstance(value, (int, float)) and not isinstance(value, bool) and bool(np.isfinite(value))
+
+
+def _mapping_has_exact_keys(payload: object, keys: set[str]) -> bool:
+    return isinstance(payload, dict) and set(payload) == keys
+
+
+def _analysis_json_errors(path: Path, payload: object) -> list[str]:
+    name = path.name
+    invalid = False
+    if name == "baseline_per_case.json":
+        top_keys = {
+            "axial_force_median_mean_absolute_error_pct", "axial_force_median_relative_l2_pct",
+            "bending_moment_median_mean_absolute_error_pct", "bending_moment_median_relative_l2_pct",
+            "cases", "comparison_scope",
+        }
+        case_keys = {
+            "case_index", "axial_force_mean_absolute_error_pct", "axial_force_relative_l2_pct",
+            "bending_moment_mean_absolute_error_pct", "bending_moment_relative_l2_pct",
+        }
+        invalid = not _mapping_has_exact_keys(payload, top_keys)
+        if not invalid:
+            invalid = not all(_is_finite_number(payload[key]) for key in top_keys - {"cases", "comparison_scope"})
+            invalid |= not isinstance(payload["comparison_scope"], str)
+            cases = payload["cases"]
+            invalid |= not isinstance(cases, list) or len(cases) != 20
+            if not invalid:
+                invalid |= any(
+                    not _mapping_has_exact_keys(case, case_keys)
+                    or not isinstance(case["case_index"], int)
+                    or not 0 <= case["case_index"] < 100
+                    or not all(_is_finite_number(case[key]) for key in case_keys - {"case_index"})
+                    for case in cases
+                )
+                invalid |= len({case["case_index"] for case in cases}) != len(cases)
+    elif name == "expected_statistics.json":
+        ablation_keys = {"slope_mean_pct", "slope_std_pct", "N_mean_pct", "N_std_pct", "M_mean_pct", "M_std_pct"}
+        split_keys = {"N_median_pct", "M_median_pct", "sigma_profile_median_pct", "sigma_peak_median_pct", "cracking_extent_median_pp"}
+        range_keys = {"N_min_pct", "N_max_pct", "M_min_pct", "M_max_pct", "sigma_profile_min_pct", "sigma_profile_max_pct", "sigma_peak_min_pct", "sigma_peak_max_pct", "cracking_extent_min_pp", "cracking_extent_max_pp"}
+        baseline_keys = {"N_median_pct", "M_median_pct", "N_median_bootstrap_interval_pct", "M_median_bootstrap_interval_pct", "N_wilcoxon_p", "M_wilcoxon_p", "primary_N_median_pct", "primary_M_median_pct", "primary_N_median_bootstrap_interval_pct", "primary_M_median_bootstrap_interval_pct"}
+        invalid = not _mapping_has_exact_keys(payload, {"baseline", "ablations", "alternative_splits"})
+        if not invalid:
+            baseline = payload["baseline"]
+            invalid = not _mapping_has_exact_keys(baseline, baseline_keys)
+            if not invalid:
+                intervals = [baseline[key] for key in baseline_keys if key.endswith("interval_pct")]
+                invalid |= not all(isinstance(value, list) and len(value) == 2 and all(_is_finite_number(item) for item in value) for value in intervals)
+                invalid |= not all(_is_finite_number(baseline[key]) for key in baseline_keys if not key.endswith("interval_pct"))
+            ablations = payload["ablations"]
+            invalid |= not _mapping_has_exact_keys(ablations, set(CONFIGURATIONS))
+            invalid |= any(not _mapping_has_exact_keys(item, ablation_keys) or not all(_is_finite_number(value) for value in item.values()) for item in ablations.values()) if isinstance(ablations, dict) else True
+            alternative = payload["alternative_splits"]
+            invalid |= not _mapping_has_exact_keys(alternative, {"per_split", "ranges"})
+            if not invalid:
+                per_split = alternative["per_split"]
+                invalid |= not _mapping_has_exact_keys(per_split, {f"split_{index}" for index in range(1, 6)})
+                invalid |= any(not _mapping_has_exact_keys(item, split_keys) or not all(_is_finite_number(value) for value in item.values()) for item in per_split.values()) if isinstance(per_split, dict) else True
+                ranges = alternative["ranges"]
+                invalid |= not _mapping_has_exact_keys(ranges, range_keys) or not all(_is_finite_number(value) for value in ranges.values())
+    elif name.startswith("seed_"):
+        metric_keys = {"axial_force_relative_l2_pct", "bending_moment_relative_l2_pct", "enn_c0_relative_l2_pct", "enn_slope_relative_l2_pct", "midplane_strain_relative_l2_pct", "slope_ss_relative_l2_pct"}
+        invalid = not _mapping_has_exact_keys(payload, {"training_cases"})
+        if not invalid:
+            cases = payload["training_cases"]
+            invalid = not _mapping_has_exact_keys(cases, {"20", "40", "60", "80"})
+            invalid |= any(not _mapping_has_exact_keys(item, metric_keys) or not all(_is_finite_number(value) for value in item.values()) for item in cases.values()) if isinstance(cases, dict) else True
+    return [f"{path}: invalid schema"] if invalid else []
+
 def validate_analysis_tree(data_dir: Path) -> list[str]:
-    """Return safety, schema, and cross-archive consistency errors."""
+    """Return exact-schema, safety, and cross-archive consistency errors."""
 
     data_dir = Path(data_dir)
     analysis_dir = _analysis_root(data_dir)
@@ -185,12 +288,13 @@ def validate_analysis_tree(data_dir: Path) -> list[str]:
     for path in sorted(actual_paths - set(expected)):
         errors.append(f"unexpected analysis archive: {path.relative_to(data_dir)}")
 
+    primary_path = analysis_dir / "primary_test_predictions.npz"
     for configuration in CONFIGURATIONS:
         paths = [
             analysis_dir / "ablation_predictions" / configuration / f"seed_{seed}.npz"
             for seed in range(3)
         ]
-        errors.extend(_archive_group_errors(archives, paths))
+        errors.extend(_archive_group_errors(archives, [primary_path, *paths]))
     for split in range(1, 6):
         split_dir = analysis_dir / "split_predictions" / f"split_{split}"
         paths = [
@@ -209,10 +313,10 @@ def validate_analysis_tree(data_dir: Path) -> list[str]:
         try:
             payload = json.loads(path.read_text())
             json.dumps(payload, allow_nan=False)
+            errors.extend(_analysis_json_errors(path, payload))
         except (OSError, TypeError, ValueError, json.JSONDecodeError) as error:
             errors.append(f"{path}: {error}")
     return errors
-
 
 def _load_references(data_dir: Path) -> tuple[dict[str, np.ndarray], np.ndarray]:
     with np.load(data_dir / "profiles_NM.npz", allow_pickle=False) as archive:

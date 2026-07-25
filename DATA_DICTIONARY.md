@@ -3,7 +3,7 @@
 All arrays are synthetic or processed numeric release artifacts. `n=100` is
 the synthetic design count, `m=200` is the normalised perimeter-station count,
 and `q=20` is the fixed public test split. Numeric entries are finite; boolean
-entries are masks. Units labelled “normalised” or “dimensionless” have no
+entries are masks. Units labelled 鈥渘ormalised鈥?or 鈥渄imensionless鈥?have no
 physical unit. Source/provenance classes are **synthetic reference**,
 **model prediction**, or **processed analysis**.
 
@@ -14,7 +14,7 @@ physical unit. Source/provenance classes are **synthetic reference**,
 | `ct_params.npy[:, 0:4]` | `(100, 4)` / `float64` | m | Four geometric input parameters for each synthetic section; synthetic reference. |
 | `ct_params.npy[:, 4]` | `(100,)` / `float64` | deg C | Fixed thermal boundary value (`-19.2`); synthetic reference. |
 | `profiles_NM.npz:N`, `N_hooke`, `N_grid` | each `(100, 200)` / `float64` | MPa m | Axial-resultant reference and two constitutive/grid comparison routes; synthetic reference. |
-| `profiles_NM.npz:M`, `M_hooke`, `M_grid` | each `(100, 200)` / `float64` | MPa m² | Bending-moment reference and two comparison routes; synthetic reference. |
+| `profiles_NM.npz:M`, `M_hooke`, `M_grid` | each `(100, 200)` / `float64` | MPa m虏 | Bending-moment reference and two comparison routes; synthetic reference. |
 | `profiles_NM.npz:Q` | `(100, 200)` / `float64` | MPa m | Shear resultant; synthetic reference. |
 | `profiles_NM.npz:eps_m`, `slope_ss`, `enn_c0`, `enn_slope` | each `(100, 200)` / `float64` | dimensionless | Shell strain/strain-gradient target fields; synthetic reference. |
 | `profiles_NM.npz:valid` | `(100, 200)` / `bool` | mask | Valid perimeter stations; synthetic reference. |
@@ -27,18 +27,21 @@ physical unit. Source/provenance classes are **synthetic reference**,
 
 Every archive below uses `test_indices` (`(20,)`, `int64`, zero-based design
 index, dimensionless) and `station_coordinates` (`(200,)`, `float64`,
-normalised perimeter). These identify the same fixed 20-section test split.
+normalised perimeter). The primary archive and all ablation archives share one fixed
+20-section test split. Each `split_{1..5}` alternative-split family has its own
+20-section indices; its mechanics and temperature archives share those indices and
+station coordinates only within that family.
 
 | Archive family and field | Shape / dtype | Units | Provenance |
 | --- | --- | --- | --- |
 | `analysis/primary_test_predictions.npz:valid_mask`, `comparison_mask` | each `(20, 200)` / `bool` | mask | Valid/evaluation mask; processed analysis. |
 | `primary_test_predictions:axial_force_truth`, `axial_force_prediction`, `axial_force_prediction_strain_route` | `(20, 200)` / `float64`, `float32`, `float64` | MPa m | Reference, direct model, and strain-route axial resultants; synthetic reference/model prediction/processed analysis. |
-| `primary_test_predictions:bending_moment_truth`, `bending_moment_prediction_direct`, `bending_moment_prediction_strain_route` | `(20, 200)` / `float64`, `float32`, `float64` | MPa m² | Reference, direct model, and strain-route bending resultants; synthetic reference/model prediction/processed analysis. |
+| `primary_test_predictions:bending_moment_truth`, `bending_moment_prediction_direct`, `bending_moment_prediction_strain_route` | `(20, 200)` / `float64`, `float32`, `float64` | MPa m虏 | Reference, direct model, and strain-route bending resultants; synthetic reference/model prediction/processed analysis. |
 | `primary_test_predictions:midplane_strain_prediction`, `slope_ss_prediction`, `enn_c0_prediction`, `enn_slope_prediction` | each `(20, 200)` / `float32` | dimensionless | Primary mechanics model predictions. |
 | `primary_test_predictions:axial_force_relative_l2_pct`, `bending_moment_relative_l2_pct`, `slope_ss_relative_l2_pct`, `baseline_slope_ss_relative_l2_pct` | each `(20,)` / `float64` | % | Per-section relative-L2 errors; processed analysis. |
 | `analysis/ablation_predictions/{primary_k32,parameters_pca_k32,parameters_pca_k16,pca_only_k32}/seed_{0,1,2}.npz:predicted_midplane_strain`, `predicted_slope_ss`, `predicted_enn_c0`, `predicted_enn_slope` | each `(20, 200)` / `float32` | dimensionless | Ablation mechanics predictions. |
 | Same ablation archives: `predicted_axial_force` | `(20, 200)` / `float32` | MPa m | Ablation axial-resultant prediction. |
-| Same ablation archives: `predicted_bending_moment_direct` | `(20, 200)` / `float32` | MPa m² | Ablation bending-moment prediction. |
+| Same ablation archives: `predicted_bending_moment_direct` | `(20, 200)` / `float32` | MPa m虏 | Ablation bending-moment prediction. |
 | `analysis/split_predictions/split_{1..5}/mechanics_seed_{0..2}.npz`: the six `predicted_*` mechanics fields above | each `(20, 200)` / `float32` | as above | Alternative-split mechanics predictions. |
 | `analysis/split_predictions/split_{1..5}/temperature_seed_{0..2}.npz:predicted_temperature_c0`, `predicted_temperature_slope` | each `(20, 200)` / `float32` | deg C | Alternative-split temperature predictions. |
 
