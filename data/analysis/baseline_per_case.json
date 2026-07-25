@@ -1,0 +1,149 @@
+{
+  "axial_force_median_mean_absolute_error_pct": 8.478121895486355,
+  "axial_force_median_relative_l2_pct": 8.4105821005976,
+  "bending_moment_median_mean_absolute_error_pct": 47.11754638986665,
+  "bending_moment_median_relative_l2_pct": 53.34699400618473,
+  "cases": [
+    {
+      "axial_force_mean_absolute_error_pct": 11.83297302623308,
+      "axial_force_relative_l2_pct": 12.080132130640653,
+      "bending_moment_mean_absolute_error_pct": 102.23347607695233,
+      "bending_moment_relative_l2_pct": 61.669553288044355,
+      "case_index": 26
+    },
+    {
+      "axial_force_mean_absolute_error_pct": 7.018445151244082,
+      "axial_force_relative_l2_pct": 7.765336021528754,
+      "bending_moment_mean_absolute_error_pct": 51.82675366807705,
+      "bending_moment_relative_l2_pct": 88.91482098404536,
+      "case_index": 86
+    },
+    {
+      "axial_force_mean_absolute_error_pct": 5.424086947716141,
+      "axial_force_relative_l2_pct": 4.878986208551458,
+      "bending_moment_mean_absolute_error_pct": 64.5169408142366,
+      "bending_moment_relative_l2_pct": 64.82996277598141,
+      "case_index": 2
+    },
+    {
+      "axial_force_mean_absolute_error_pct": 8.347972667999176,
+      "axial_force_relative_l2_pct": 8.45322750537199,
+      "bending_moment_mean_absolute_error_pct": 50.76965093368106,
+      "bending_moment_relative_l2_pct": 50.525695029659424,
+      "case_index": 55
+    },
+    {
+      "axial_force_mean_absolute_error_pct": 7.714306164039949,
+      "axial_force_relative_l2_pct": 7.0003170978531575,
+      "bending_moment_mean_absolute_error_pct": 97.20781893786892,
+      "bending_moment_relative_l2_pct": 56.98094775088101,
+      "case_index": 75
+    },
+    {
+      "axial_force_mean_absolute_error_pct": 9.515533203205946,
+      "axial_force_relative_l2_pct": 8.367936695823209,
+      "bending_moment_mean_absolute_error_pct": 41.35601668993702,
+      "bending_moment_relative_l2_pct": 40.12601546435919,
+      "case_index": 93
+    },
+    {
+      "axial_force_mean_absolute_error_pct": 7.457548271387308,
+      "axial_force_relative_l2_pct": 7.5010172149736505,
+      "bending_moment_mean_absolute_error_pct": 15.555972855108456,
+      "bending_moment_relative_l2_pct": 39.73406821733691,
+      "case_index": 16
+    },
+    {
+      "axial_force_mean_absolute_error_pct": 8.188643458405634,
+      "axial_force_relative_l2_pct": 6.744070283773828,
+      "bending_moment_mean_absolute_error_pct": 52.97301235895748,
+      "bending_moment_relative_l2_pct": 28.748587756057237,
+      "case_index": 73
+    },
+    {
+      "axial_force_mean_absolute_error_pct": 10.340321596639926,
+      "axial_force_relative_l2_pct": 10.892549828701194,
+      "bending_moment_mean_absolute_error_pct": 48.86646836722084,
+      "bending_moment_relative_l2_pct": 63.33652577163919,
+      "case_index": 54
+    },
+    {
+      "axial_force_mean_absolute_error_pct": 10.688739321957957,
+      "axial_force_relative_l2_pct": 10.09328231151553,
+      "bending_moment_mean_absolute_error_pct": 25.879747871470357,
+      "bending_moment_relative_l2_pct": 26.865193421805007,
+      "case_index": 95
+    },
+    {
+      "axial_force_mean_absolute_error_pct": 8.608271122973534,
+      "axial_force_relative_l2_pct": 9.072066685600918,
+      "bending_moment_mean_absolute_error_pct": 36.153091833014685,
+      "bending_moment_relative_l2_pct": 35.020346137501065,
+      "case_index": 53
+    },
+    {
+      "axial_force_mean_absolute_error_pct": 10.152555951788749,
+      "axial_force_relative_l2_pct": 8.987855161302399,
+      "bending_moment_mean_absolute_error_pct": 87.44813399795548,
+      "bending_moment_relative_l2_pct": 58.05996503011749,
+      "case_index": 92
+    },
+    {
+      "axial_force_mean_absolute_error_pct": 11.720304075875662,
+      "axial_force_relative_l2_pct": 11.725043764295384,
+      "bending_moment_mean_absolute_error_pct": 27.730917007373225,
+      "bending_moment_relative_l2_pct": 29.98937161311223,
+      "case_index": 78
+    },
+    {
+      "axial_force_mean_absolute_error_pct": 7.07564012456368,
+      "axial_force_relative_l2_pct": 7.072781049654438,
+      "bending_moment_mean_absolute_error_pct": 54.17422521574707,
+      "bending_moment_relative_l2_pct": 35.55607036974134,
+      "case_index": 13
+    },
+    {
+      "axial_force_mean_absolute_error_pct": 13.910453775309902,
+      "axial_force_relative_l2_pct": 13.76853115119222,
+      "bending_moment_mean_absolute_error_pct": 33.91962971686471,
+      "bending_moment_relative_l2_pct": 43.223250298012594,
+      "case_index": 7
+    },
+    {
+      "axial_force_mean_absolute_error_pct": 13.540512102145401,
+      "axial_force_relative_l2_pct": 13.9743800218697,
+      "bending_moment_mean_absolute_error_pct": 45.368624412512446,
+      "bending_moment_relative_l2_pct": 62.07171626323915,
+      "case_index": 30
+    },
+    {
+      "axial_force_mean_absolute_error_pct": 6.996286365787987,
+      "axial_force_relative_l2_pct": 7.259022533190665,
+      "bending_moment_mean_absolute_error_pct": 31.080121151476323,
+      "bending_moment_relative_l2_pct": 23.30256541837406,
+      "case_index": 22
+    },
+    {
+      "axial_force_mean_absolute_error_pct": 9.22755779980869,
+      "axial_force_relative_l2_pct": 9.039107279271136,
+      "bending_moment_mean_absolute_error_pct": 31.451731704779405,
+      "bending_moment_relative_l2_pct": 56.168292982710035,
+      "case_index": 24
+    },
+    {
+      "axial_force_mean_absolute_error_pct": 7.556443811881904,
+      "axial_force_relative_l2_pct": 7.188981056567223,
+      "bending_moment_mean_absolute_error_pct": 40.28351241768493,
+      "bending_moment_relative_l2_pct": 59.19746186680126,
+      "case_index": 33
+    },
+    {
+      "axial_force_mean_absolute_error_pct": 6.08676349909259,
+      "axial_force_relative_l2_pct": 6.17630188763253,
+      "bending_moment_mean_absolute_error_pct": 66.506129523358,
+      "bending_moment_relative_l2_pct": 56.9410860815488,
+      "case_index": 8
+    }
+  ],
+  "comparison_scope": "ALL-IN-SHELL (>25%)"
+}
