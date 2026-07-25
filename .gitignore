@@ -1,3 +1,5 @@
 .private_release_audit/
 __pycache__/
 *.py[cod]
+source_figures/
+results.json

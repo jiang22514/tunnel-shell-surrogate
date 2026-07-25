@@ -1,95 +1,44 @@
 # Shell-reduced surrogate for frost-season tunnel lining internal forces
 
-Reproducibility package for:
+This repository is the compact public release for *A shell-reduced surrogate for frost-season thermal internal forces in cold-region tunnel linings across section geometries*. It contains portable Python code, six released model checkpoints, synthetic section/profile arrays for 100 designs, and processed analysis arrays for the fixed 20-section test split and supplementary experiments.
 
-> *A shell-reduced surrogate for frost-season thermal internal forces in
-> cold-region tunnel linings across section geometries*
+## Public contents
 
-The compact release is self-contained for reproducing the paper's primary
-20-section test-set results. It does not require Abaqus output databases,
-the authors' local directories, or the approximately 500 MB full-field mesh
-dataset.
+- `code/`: training, headline evaluation, statistical analysis, and release integrity scripts.
+- `data/`: synthetic geometry, profile, temperature, and processed analysis arrays. Field names, shapes, units, and provenance are in `DATA_DICTIONARY.md`.
+- `models/`: three mechanics and three temperature PyTorch checkpoints.
+- `CITATION.cff`, `MANIFEST.tsv`, and `SHA256SUMS`: citation and immutable artifact metadata.
 
-## Contents
-
-- `data/ct_params.npy`: four section parameters for 100 designs (the stored
-  fifth column is the fixed thermal boundary value).
-- `data/profiles_NM.npz`: 200-station reference mechanics/resultant profiles
-  and validity masks.
-- `data/tprofiles_T.npz`: 200-station temperature-profile coefficients.
-- `models/`: three mechanics checkpoints and three temperature checkpoints.
-- `code/reproduce_headline.py`: portable evaluation and C40 cracking check.
-- `code/train_mechanics.py`: joint training of the six mechanics heads
-  (`eps_m`, `slope_ss`, `enn_c0`, `enn_slope`, `N`, and `M`).
-- `code/train_temperature.py`: a separate joint training run for the two
-  temperature heads (`T_c0` and `T_slope`).
-- `code/legacy/`: scope notes for extended analyses whose raw inputs are not
-  contained in this compact package.
-
-All eight output networks have independent weights and no shared trunk.
-"Joint training" refers to the summed loss within each run: six mechanics
-networks in one run and two temperature networks in a separate run.
-
-## Environment
-
-Python 3.10 or newer is recommended.
+Install the Python dependencies with:
 
 ```bash
 python -m pip install -r requirements.txt
 ```
 
-The released results were produced with PyTorch 2.11, NumPy 2.2,
-scikit-learn 1.7, and SciPy 1.15. The compact headline reproduction itself
-uses only NumPy and PyTorch.
+## Run the released evaluations
 
-## Reproduce the headline test-set results
-
-From the repository root:
+Run the portable headline evaluation on CPU:
 
 ```bash
 python code/reproduce_headline.py --device cpu
 ```
 
-Expected output (minor last-digit variation between platforms is acceptable):
-
-```text
-N profile median relative L2: 3.19%
-M profile median relative L2: 9.45%
-sigma_t profile median relative L2: 3.40%
-sigma_t peak median relative error: 3.71%
-cracking-extent median absolute error: 1.00 pp
-```
-
-The cracking-extent calculation uses the C40 characteristic axial tensile
-strength `f_tk = 2.39 MPa`, matching the manuscript. The bending moment uses
-the paper's primary strain/temperature constitutive route; axial force uses
-the direct `N` head.
-
-To write a machine-readable result file:
+Compute the public statistical summaries and write four source-data figures to `source_figures/`:
 
 ```bash
-python code/reproduce_headline.py --device cpu --output-json results.json
+python code/reproduce_statistics.py
 ```
 
-## Retrain the released profile operators
-
-The two training commands use the same fixed 80/20 split (split seed 0),
-32-harmonic periodic trunk, 120,000 full-batch epochs, and learning-rate
-schedule described in the paper:
+Check the metadata and all released data/model bytes before use:
 
 ```bash
-python code/train_mechanics.py --seed 0 --device cuda
-python code/train_temperature.py --seed 0 --device cuda
+python code/verify_release.py
 ```
 
-Repeat with `--seed 1` and `--seed 2` for the three-seed ensemble. On the
-reported RTX 5090, the six mechanics heads took about 16 minutes per seed and
-the two temperature heads about 6 minutes per seed when run sequentially.
+## Scope and limitations
 
-## Run regression tests
+The approximately 500 MB full-field mesh arrays are intentionally omitted. This compact package does not include Abaqus output databases, author-local working directories, or any Genieshan restricted data. The released synthetic and processed arrays support the commands above, but are not a substitute for the omitted full-field source collection.
 
-```bash
-python -m unittest discover -s tests -v
-```
+## Licences
 
-License: MIT (see `LICENSE`).
+Code and model checkpoints are released under the MIT License; see `LICENSE`. Public synthetic and processed numeric data are released under CC BY 4.0; see `LICENSE-DATA`.

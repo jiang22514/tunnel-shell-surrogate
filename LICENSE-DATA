@@ -1,0 +1,12 @@
+Creative Commons Attribution 4.0 International
+
+Copyright (c) 2026 Hongyue Jiang, Shunyuan Zhang, Peizhong Yu, Fan Wang,
+and Zhenggui Hu
+
+The public synthetic and processed numeric data in `data/` are licensed under
+the Creative Commons Attribution 4.0 International License (CC BY 4.0).
+To view a copy of this license, visit
+https://creativecommons.org/licenses/by/4.0/.
+
+The source code and released model checkpoints remain under the MIT License in
+`LICENSE`.
