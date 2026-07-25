@@ -12,8 +12,9 @@ The release must:
 - provide small, nonconfidential source data for the reported baseline,
   statistical, ablation, alternative-split, and learning-curve analyses;
 - exclude confidential Genieshan survey and finite-element data;
-- measure and report how much of the paper is actually reproduced, without
-  requiring complete paper-wide reproduction; and
+- measure internally how much of the paper is reproduced, without publishing
+  a claim-by-claim coverage matrix or requiring complete paper-wide
+  reproduction; and
 - revise only the English and Chinese Data Availability/code-release
   statements so that they match the verified public scope.
 
@@ -59,8 +60,6 @@ The `v1.0.0` tagged snapshot will include:
 - three-seed learning-curve result files;
 - a portable analysis entry point that recomputes the nonconfidential
   statistics and source figures;
-- a human-readable reproducibility coverage report and a machine-readable
-  reproduction result file;
 - regression tests and the Python dependency list;
 - the MIT software licence;
 - a CC BY 4.0 notice for the released synthetic and processed data;
@@ -126,19 +125,21 @@ does not reproduce any Genieshan result, because even small truth or
 prediction profiles derived from the third-party survey are treated as
 restricted unless the data owner authorizes redistribution.
 
-The README, data dictionary, and paper Data Availability statements must
-describe this distinction using `processed source data`, `selected reported
-statistics`, and `partial reproducibility`. They must not claim that the
-compact package reproduces the raw Abaqus-to-field pipeline or all results in
-the manuscript.
+The README and data dictionary must describe the released files and their
+provenance accurately. The paper Data Availability statements will identify
+the public materials and restricted Genieshan data without a claim-by-claim
+reproducibility discussion. None of these files may claim that the compact
+package reproduces the raw Abaqus-to-field pipeline or all results in the
+manuscript.
 
-## Reproducibility audit and outputs
+## Internal reproducibility audit
 
 The public package will be tested from its own repository root using only
 released files and declared dependencies. No fallback path may read files from
 `/home/jiang`, `/mnt/d`, or another author-workspace directory.
 
-Every requested paper item will receive one of three statuses:
+For the author's internal release check, every requested paper item will
+receive one of three statuses:
 
 - `reproduced`: the released command recomputes the reported value from
   released numeric inputs within its declared tolerance;
@@ -148,10 +149,10 @@ Every requested paper item will receive one of three statuses:
 - `not included`: the necessary data are confidential, deliberately omitted,
   or unavailable in portable form.
 
-`REPRODUCIBILITY.md` will map these statuses to the relevant paper sections,
-tables, and figures. `reproduction_report.json` will record the command,
-observed value, paper value, absolute difference, tolerance, and status for
-each tested quantity.
+The audit summary and machine-readable observations will be written only to a
+git-ignored local audit directory. They will be given to the author directly
+and will not be included in the public repository, GitHub release, Zenodo
+record, README, or manuscript.
 
 The required checks are:
 
@@ -185,8 +186,6 @@ The release preparation will add or revise the following public-facing files:
 
 - `README.md`: supported workflows, expected metrics, data scope, licences,
   enhanced statistical reproduction, and restricted-data statement.
-- `REPRODUCIBILITY.md`: claim-by-claim coverage and limitations.
-- `reproduction_report.json`: machine-readable observed-versus-paper results.
 - `CITATION.cff`: release title, version, authors in manuscript order,
   repository URL, software licence, and preferred citation message. ORCID
   fields will be omitted because none are verified.
@@ -220,11 +219,8 @@ Only the following manuscript content may be revised:
 The revisions will be made after the reproducibility audit so they describe
 observed public-package capability rather than intended capability. They will:
 
-- list the actual public code, processed profiles, weights, analysis source
-  data, and reproducibility report;
-- state that the package reproduces the primary 20-section metrics and
-  selected nonconfidential downstream statistics to the extent documented in
-  `REPRODUCIBILITY.md`;
+- list the actual public code, processed profiles, weights, and analysis source
+  data without enumerating a reproducibility coverage matrix;
 - state that the 500 MB full-field arrays and end-to-end 2D-baseline
   retraining are not part of the compact archive;
 - state that the Genieshan survey and finite-element data are not publicly
@@ -248,7 +244,8 @@ Any protected-file change blocks the manuscript commit.
    rewrite existing history.
 2. Stage only the confirmed public-package files.
 3. Run the full verification, reproducibility, and confidentiality audit.
-4. Present the reproducibility coverage report to the user before publishing.
+4. Present the internal reproducibility audit summary to the user before
+   publishing; do not add it to the public package.
 5. Commit the release preparation and push the branch.
 6. Open a draft pull request against GitHub `main` for final inspection.
 7. Merge only after the diff and exact release archive have been reviewed.
@@ -267,8 +264,7 @@ Before any push:
 
 - run all unit tests;
 - run the headline and enhanced-statistics reproduction commands;
-- produce and inspect `REPRODUCIBILITY.md` and
-  `reproduction_report.json`;
+- produce and inspect the git-ignored internal audit outputs;
 - generate the four selected nonconfidential source figures and verify that
   every supported panel is backed by a released numeric field;
 - run one-epoch CPU smoke tests for both training entry points;
@@ -303,5 +299,5 @@ the release.
 - Do not publish the GitHub release until Zenodo integration is enabled.
 - Do not upload confidential files to Zenodo as either public or restricted
   content; third-party storage would itself require the data owner's approval.
-- Ask the user to approve the reproducibility report, draft pull request, and
+- Ask the user to approve the internal audit summary, draft pull request, and
   final GitHub release publication.
