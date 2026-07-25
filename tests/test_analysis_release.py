@@ -47,3 +47,47 @@ class AnalysisReleaseTest(unittest.TestCase):
             paths = write_source_figures(ROOT / "data", Path(tmp))
             self.assertEqual(len(paths), 4)
             self.assertTrue(all(path.is_file() and path.stat().st_size > 0 for path in paths))
+
+    def _copy_analysis_tree(self, temporary_root: Path) -> Path:
+        import shutil
+
+        data_root = temporary_root / "data"
+        shutil.copytree(ROOT / "data" / "analysis", data_root / "analysis")
+        return data_root
+
+    def test_safe_schema_rejects_nonfinite_numeric_arrays(self):
+        import numpy as np
+
+        with tempfile.TemporaryDirectory() as tmp:
+            data_root = self._copy_analysis_tree(Path(tmp))
+            archive_path = data_root / "analysis" / "primary_test_predictions.npz"
+            with np.load(archive_path, allow_pickle=False) as archive:
+                arrays = {key: archive[key] for key in archive.files}
+            arrays["axial_force_prediction"] = arrays["axial_force_prediction"].copy()
+            arrays["axial_force_prediction"][0, 0] = np.nan
+            np.savez_compressed(archive_path, **arrays)
+            self.assertTrue(any("non-finite" in error for error in validate_analysis_tree(data_root)))
+
+    def test_safe_schema_rejects_unexpected_numeric_archives(self):
+        import numpy as np
+
+        with tempfile.TemporaryDirectory() as tmp:
+            data_root = self._copy_analysis_tree(Path(tmp))
+            np.savez_compressed(data_root / "analysis" / "unpublished_numeric.npz", values=np.array([1.0]))
+            self.assertTrue(any("unexpected analysis archive" in error for error in validate_analysis_tree(data_root)))
+
+    def test_safe_schema_rejects_cross_seed_indices_and_shapes(self):
+        import numpy as np
+
+        with tempfile.TemporaryDirectory() as tmp:
+            data_root = self._copy_analysis_tree(Path(tmp))
+            archive_path = data_root / "analysis" / "ablation_predictions" / "primary_k32" / "seed_1.npz"
+            with np.load(archive_path, allow_pickle=False) as archive:
+                arrays = {key: archive[key] for key in archive.files}
+            arrays["test_indices"] = arrays["test_indices"].copy()
+            arrays["test_indices"][0] += 1
+            arrays["predicted_axial_force"] = arrays["predicted_axial_force"][:, :-1]
+            np.savez_compressed(archive_path, **arrays)
+            errors = validate_analysis_tree(data_root)
+            self.assertTrue(any("test_indices differ" in error for error in errors))
+            self.assertTrue(any("shape" in error for error in errors))

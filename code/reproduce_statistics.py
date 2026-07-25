@@ -57,6 +57,8 @@ def _load_npz(path: Path, required_keys: set[str]) -> dict[str, np.ndarray]:
     for key, array in arrays.items():
         if array.dtype.kind not in "biuf":
             raise TypeError(f"{path}:{key} has unsafe dtype {array.dtype}")
+        if array.dtype.kind == "f" and not np.isfinite(array).all():
+            raise ValueError(f"{path}:{key} contains non-finite values")
     return arrays
 
 
@@ -101,20 +103,102 @@ def _expected_analysis_paths(analysis_dir: Path) -> dict[Path, set[str]]:
     return expected
 
 
+def _array_structure_errors(
+    path: Path, arrays: dict[str, np.ndarray], required_keys: set[str]
+) -> list[str]:
+    errors: list[str] = []
+    test_indices = arrays["test_indices"]
+    stations = arrays["station_coordinates"]
+    if test_indices.ndim != 1 or test_indices.size == 0:
+        errors.append(f"{path}: test_indices must be a non-empty 1D array")
+        return errors
+    if stations.ndim != 1 or stations.size == 0:
+        errors.append(f"{path}: station_coordinates must be a non-empty 1D array")
+        return errors
+    profile_shape = (len(test_indices), len(stations))
+    if required_keys == PRIMARY_KEYS:
+        profile_keys = PRIMARY_KEYS - {
+            "test_indices", "station_coordinates", "axial_force_relative_l2_pct",
+            "bending_moment_relative_l2_pct", "slope_ss_relative_l2_pct",
+            "baseline_slope_ss_relative_l2_pct",
+        }
+        vector_keys = {
+            "axial_force_relative_l2_pct", "bending_moment_relative_l2_pct",
+            "slope_ss_relative_l2_pct", "baseline_slope_ss_relative_l2_pct",
+        }
+    else:
+        profile_keys = required_keys - {"test_indices", "station_coordinates"}
+        vector_keys = set()
+    for key in profile_keys:
+        if arrays[key].shape != profile_shape:
+            errors.append(
+                f"{path}: {key} has shape {arrays[key].shape}, expected {profile_shape}"
+            )
+    for key in vector_keys:
+        if arrays[key].shape != (len(test_indices),):
+            errors.append(
+                f"{path}: {key} has shape {arrays[key].shape}, expected {(len(test_indices),)}"
+            )
+    return errors
+
+
+def _archive_group_errors(
+    archives: dict[Path, dict[str, np.ndarray]], paths: list[Path]
+) -> list[str]:
+    errors: list[str] = []
+    reference_path = paths[0]
+    reference = archives.get(reference_path)
+    if reference is None:
+        return errors
+    for path in paths[1:]:
+        arrays = archives.get(path)
+        if arrays is None:
+            continue
+        if not np.array_equal(arrays["test_indices"], reference["test_indices"]):
+            errors.append(f"{path}: test_indices differ from {reference_path}")
+        if arrays["station_coordinates"].shape != reference["station_coordinates"].shape:
+            errors.append(f"{path}: station_coordinates shape differs from {reference_path}")
+    return errors
+
+
 def validate_analysis_tree(data_dir: Path) -> list[str]:
-    """Return schema errors for every released compact analysis file."""
+    """Return safety, schema, and cross-archive consistency errors."""
 
     data_dir = Path(data_dir)
     analysis_dir = _analysis_root(data_dir)
+    expected = _expected_analysis_paths(analysis_dir)
     errors: list[str] = []
-    for path, required_keys in _expected_analysis_paths(analysis_dir).items():
+    archives: dict[Path, dict[str, np.ndarray]] = {}
+    for path, required_keys in expected.items():
         if not path.is_file():
             errors.append(f"missing: {path.relative_to(data_dir)}")
             continue
         try:
-            _load_npz(path, required_keys)
+            arrays = _load_npz(path, required_keys)
         except (OSError, TypeError, ValueError) as error:
             errors.append(str(error))
+            continue
+        archives[path] = arrays
+        errors.extend(_array_structure_errors(path, arrays, required_keys))
+
+    actual_paths = set(analysis_dir.rglob("*.npz")) if analysis_dir.is_dir() else set()
+    for path in sorted(actual_paths - set(expected)):
+        errors.append(f"unexpected analysis archive: {path.relative_to(data_dir)}")
+
+    for configuration in CONFIGURATIONS:
+        paths = [
+            analysis_dir / "ablation_predictions" / configuration / f"seed_{seed}.npz"
+            for seed in range(3)
+        ]
+        errors.extend(_archive_group_errors(archives, paths))
+    for split in range(1, 6):
+        split_dir = analysis_dir / "split_predictions" / f"split_{split}"
+        paths = [
+            split_dir / f"{kind}_seed_{seed}.npz"
+            for kind in ("mechanics", "temperature")
+            for seed in range(3)
+        ]
+        errors.extend(_archive_group_errors(archives, paths))
 
     json_paths = [
         analysis_dir / "baseline_per_case.json",
@@ -126,15 +210,6 @@ def validate_analysis_tree(data_dir: Path) -> list[str]:
             payload = json.loads(path.read_text())
             json.dumps(payload, allow_nan=False)
         except (OSError, TypeError, ValueError, json.JSONDecodeError) as error:
-            errors.append(f"{path}: {error}")
-
-    for path in analysis_dir.rglob("*.npz") if analysis_dir.is_dir() else ():
-        try:
-            with np.load(path, allow_pickle=False) as archive:
-                for key in archive.files:
-                    if archive[key].dtype.kind not in "biuf":
-                        errors.append(f"{path}: {key} has unsafe dtype")
-        except (OSError, ValueError) as error:
             errors.append(f"{path}: {error}")
     return errors
 
