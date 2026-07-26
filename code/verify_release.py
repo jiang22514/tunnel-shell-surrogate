@@ -17,6 +17,7 @@ REQUIRED_CFF = {
     "message": "If you use this software, please cite it as below.",
     "title": "Shell-reduced surrogate for frost-season tunnel lining internal forces",
     "version": "1.0.0",
+    "date-released": "2026-07-26",
     "repository-code": "https://github.com/jiang22514/tunnel-shell-surrogate",
     "license": "MIT",
 }
