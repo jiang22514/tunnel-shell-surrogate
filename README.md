@@ -1,23 +1,44 @@
-# Shell-reduced surrogate for frost-season tunnel lining internal forces — release package
+# Shell-reduced surrogate for frost-season tunnel lining internal forces
 
-Companion to: 'A shell-reduced surrogate for frost-season thermal internal
-forces in cold-region tunnel linings across section geometries'
-(submitted to Tunnelling and Underground Space Technology).
+This repository is the compact public release for *A shell-reduced surrogate for frost-season thermal internal forces in cold-region tunnel linings across section geometries*. It contains portable Python code, six released model checkpoints, synthetic section/profile arrays for 100 designs, and processed analysis arrays for the fixed 20-section test split and supplementary experiments.
 
-License: MIT (see LICENSE). A tagged release of this repository will be
-archived on Zenodo with a DOI upon acceptance of the paper.
+## Public contents
 
-- data/: reference profiles (N/M/Q + strain/temperature labels, 100 sections,
-  200 landmark-aligned stations; profiles_NM.npz, tprofiles_T.npz) and the
-  four section parameters per design (ct_params.npy). Full field dataset
-  (u1/u2/t npz, ~500 MB) deposited separately on Zenodo.
-- code/: unroll parametrization (unroll_ct.py, ct_outline.py), profile
-  fitting/integration (shell_profiles.py), capacity check (nm_envelope.py),
-  training (_stage3_shell_train.py --nobc --nopca = primary config,
-  _stage3_T_train.py), 2D baseline (_stage2B_ff2.py), evaluation
-  chain (_t2_shell_eval.py, _t3_genie_NM.py, _c2_stats.py, _c2_nm_check.py).
-- models/: 3-seed weights of the primary configuration (profile heads + T heads).
+- `code/`: training, headline evaluation, statistical analysis, and release integrity scripts.
+- `data/`: synthetic geometry, profile, temperature, and processed analysis arrays. Field names, shapes, units, and provenance are in `DATA_DICTIONARY.md`.
+- `models/`: three mechanics and three temperature PyTorch checkpoints.
+- `CITATION.cff`, `MANIFEST.tsv`, and `SHA256SUMS`: citation and immutable artifact metadata.
 
-Environment: python>=3.10, numpy, scipy, scikit-learn, torch. See appendix A of
-the paper for all hyperparameters. To reproduce the headline table:
-  python _t2_shell_eval.py && python _t3_genie_NM.py && python _c2_nm_check.py
+Install the Python dependencies with:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+## Run the released evaluations
+
+Run the portable headline evaluation on CPU:
+
+```bash
+python code/reproduce_headline.py --device cpu
+```
+
+Compute the public statistical summaries and write four source-data figures to `source_figures/`:
+
+```bash
+python code/reproduce_statistics.py
+```
+
+Check the metadata and all released data/model bytes before use:
+
+```bash
+python code/verify_release.py
+```
+
+## Scope and limitations
+
+The approximately 500 MB full-field mesh arrays are intentionally omitted. This compact package does not include Abaqus output databases, author-local working directories, or any Genieshan restricted data. The released synthetic and processed arrays support the commands above, but are not a substitute for the omitted full-field source collection.
+
+## Licences
+
+Code and model checkpoints are released under the MIT License; see `LICENSE`. Public synthetic and processed numeric data are released under CC BY 4.0; see `LICENSE-DATA`.

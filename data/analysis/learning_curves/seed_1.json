@@ -1,0 +1,36 @@
+{
+  "training_cases": {
+    "20": {
+      "axial_force_relative_l2_pct": 8.734966358180916,
+      "bending_moment_relative_l2_pct": 28.508061548415064,
+      "enn_c0_relative_l2_pct": 1.4394910651750292,
+      "enn_slope_relative_l2_pct": 15.747174815590256,
+      "midplane_strain_relative_l2_pct": 3.8254979654137307,
+      "slope_ss_relative_l2_pct": 25.35327261284268
+    },
+    "40": {
+      "axial_force_relative_l2_pct": 4.768610127861319,
+      "bending_moment_relative_l2_pct": 25.08507354315884,
+      "enn_c0_relative_l2_pct": 0.8080219877855659,
+      "enn_slope_relative_l2_pct": 15.213864052983135,
+      "midplane_strain_relative_l2_pct": 4.412767351670718,
+      "slope_ss_relative_l2_pct": 15.105766933204844
+    },
+    "60": {
+      "axial_force_relative_l2_pct": 4.660225031529173,
+      "bending_moment_relative_l2_pct": 19.844915352204268,
+      "enn_c0_relative_l2_pct": 0.6691964199344387,
+      "enn_slope_relative_l2_pct": 14.369098930052129,
+      "midplane_strain_relative_l2_pct": 3.74276995469146,
+      "slope_ss_relative_l2_pct": 17.282246495175475
+    },
+    "80": {
+      "axial_force_relative_l2_pct": 5.913898026455444,
+      "bending_moment_relative_l2_pct": 19.367080685775875,
+      "enn_c0_relative_l2_pct": 0.7547001358774594,
+      "enn_slope_relative_l2_pct": 11.322997093569363,
+      "midplane_strain_relative_l2_pct": 2.80792217075059,
+      "slope_ss_relative_l2_pct": 12.918548567480753
+    }
+  }
+}
