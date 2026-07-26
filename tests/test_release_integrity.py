@@ -21,6 +21,7 @@ REQUIRED_CFF_FIELDS = {
     "title": "Shell-reduced surrogate for frost-season tunnel lining internal forces",
     "version": "1.0.0",
     "date-released": "2026-07-26",
+    "doi": "10.5281/zenodo.21589352",
     "repository-code": "https://github.com/jiang22514/tunnel-shell-surrogate",
     "license": "MIT",
 }

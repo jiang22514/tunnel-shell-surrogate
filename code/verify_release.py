@@ -18,6 +18,7 @@ REQUIRED_CFF = {
     "title": "Shell-reduced surrogate for frost-season tunnel lining internal forces",
     "version": "1.0.0",
     "date-released": "2026-07-26",
+    "doi": "10.5281/zenodo.21589352",
     "repository-code": "https://github.com/jiang22514/tunnel-shell-surrogate",
     "license": "MIT",
 }
@@ -230,8 +231,8 @@ def audit_release(root: Path) -> list[str]:
         errors.append("CITATION.cff: required release fields do not match")
     if authors != REQUIRED_AUTHORS:
         errors.append("CITATION.cff: author order does not match")
-    if "doi" in (root / "CITATION.cff").read_text(encoding="utf-8").lower() or "orcid" in (root / "CITATION.cff").read_text(encoding="utf-8").lower():
-        errors.append("CITATION.cff: DOI and ORCID must not be invented")
+    if "orcid" in (root / "CITATION.cff").read_text(encoding="utf-8").lower():
+        errors.append("CITATION.cff: ORCID must not be invented")
 
     entries, checksum_errors = _parse_checksums(root / "SHA256SUMS")
     errors.extend(checksum_errors)
