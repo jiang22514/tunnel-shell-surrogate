@@ -1,6 +1,12 @@
 # Shell-reduced surrogate for frost-season tunnel lining internal forces
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21589352.svg)](https://doi.org/10.5281/zenodo.21589352)
+
 This repository is the compact public release for *A shell-reduced surrogate for frost-season thermal internal forces in cold-region tunnel linings across section geometries*. It contains portable Python code, six released model checkpoints, synthetic section/profile arrays for 100 designs, and processed analysis arrays for the fixed 20-section test split and supplementary experiments.
+
+## Release and archive
+
+The formal public [v1.0.0 GitHub Release](https://github.com/jiang22514/tunnel-shell-surrogate/releases/tag/v1.0.0) was published on 26 July 2026 and is permanently archived on Zenodo as [version v1.0.0 (DOI: 10.5281/zenodo.21589352)](https://doi.org/10.5281/zenodo.21589352).
 
 ## Public contents
 
