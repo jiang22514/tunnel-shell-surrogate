@@ -1,0 +1,54 @@
+{
+ "family": "filled",
+ "stage": "second",
+ "first_stage": "models/filled/first_stage",
+ "use_desc": true,
+ "relative_loss": false,
+ "inputs": [
+  "R_top",
+  "y_knee",
+  "R_inv_ratio",
+  "t",
+  "ln r_k",
+  "rho",
+  "phi",
+  "s",
+  "cos/sin 1-32 of the station coordinate",
+  "exp(-d/0.05)",
+  "exp(-d/0.30)",
+  "exp(-a/0.5)",
+  "kappa*t",
+  "t_loc/t"
+ ],
+ "n_inputs": 77,
+ "width": 256,
+ "depth": 4,
+ "activation": "SiLU",
+ "output_init": "zero",
+ "seeds": [
+  20261022,
+  20261023,
+  20261024,
+  20261025,
+  20261026
+ ],
+ "max_updates": 24000,
+ "lr_drops": [
+  6000,
+  10000
+ ],
+ "batch": 64,
+ "check_every": 250,
+ "optimizer": {
+  "name": "Adam",
+  "lr": 0.001,
+  "decay_factor": 0.1
+ },
+ "loss": "mean of w_normalised (dM_pred-dM)^2 / M_scale^2",
+ "selection": "lowest validation loss of the same form",
+ "final_prediction": "mean dM of five seeds added to D (five-seed field mean)",
+ "n_train": 1399,
+ "n_validation": 100,
+ "device": "NVIDIA GeForce RTX 5090",
+ "torch_version": "2.11.0+cu128"
+}

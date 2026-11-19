@@ -1,0 +1,8 @@
+{
+ "seed": 20261023,
+ "updates": 9000,
+ "selected_step": 3000,
+ "validation_M": 0.0007814721902832389,
+ "seconds": 179.0824899673462,
+ "checkpoint_sha256": "2b1c9b55735e4b2e8bdfd852bc7a0a53d53ddd5fcc13830807bc528edb25a1d3"
+}

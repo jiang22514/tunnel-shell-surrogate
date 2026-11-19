@@ -1,0 +1,39 @@
+{
+ "runs": [
+  {
+   "seed": 20261022,
+   "selected_step": 4000,
+   "validation_loss": 0.0007877906318753958,
+   "validation_M_median": 3.097416693637395,
+   "seconds": 43.74882912635803
+  },
+  {
+   "seed": 20261023,
+   "selected_step": 4250,
+   "validation_loss": 0.0007704174495302141,
+   "validation_M_median": 3.086326469236126,
+   "seconds": 42.07512974739075
+  },
+  {
+   "seed": 20261024,
+   "selected_step": 4750,
+   "validation_loss": 0.0008163598831743002,
+   "validation_M_median": 3.2405298409997565,
+   "seconds": 42.082987785339355
+  },
+  {
+   "seed": 20261025,
+   "selected_step": 4000,
+   "validation_loss": 0.0007863698992878199,
+   "validation_M_median": 3.019168831147316,
+   "seconds": 41.88104486465454
+  },
+  {
+   "seed": 20261026,
+   "selected_step": 5000,
+   "validation_loss": 0.0007832343108020723,
+   "validation_M_median": 3.2029893927241604,
+   "seconds": 41.882060050964355
+  }
+ ]
+}

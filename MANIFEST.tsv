@@ -1,58 +1,145 @@
 path	bytes	sha256	category	description
-data/analysis/ablation_predictions/parameters_pca_k16/seed_0.npz	87608	46f7eebacb6998122a62a18496001200bf1511344b577bf59121ae8bf68571a4	processed-analysis	Processed public analysis artifact
-data/analysis/ablation_predictions/parameters_pca_k16/seed_1.npz	87473	d20d712b9a55ae24ae6c807d78633191cd0306d98c2f98e9be96a36cff3553d1	processed-analysis	Processed public analysis artifact
-data/analysis/ablation_predictions/parameters_pca_k16/seed_2.npz	87540	da84d38479ca4fda04104d5e6fbbc77d0d7c7738a521fb884c1071eea6234d76	processed-analysis	Processed public analysis artifact
-data/analysis/ablation_predictions/parameters_pca_k32/seed_0.npz	87399	5011ffec359ce12cde0f246210f547050b79644fe10c1bf36474e19fff80e1aa	processed-analysis	Processed public analysis artifact
-data/analysis/ablation_predictions/parameters_pca_k32/seed_1.npz	87511	07b53e73100c161f395231a729621c319afee7a329e04f9ca2d5f90b9e49464b	processed-analysis	Processed public analysis artifact
-data/analysis/ablation_predictions/parameters_pca_k32/seed_2.npz	87464	afab5d64127278e17d2e8053f0fd224f0e822fae06e5a516403411dad1d37910	processed-analysis	Processed public analysis artifact
-data/analysis/ablation_predictions/pca_only_k32/seed_0.npz	87498	31593f54fd167aea7f4ad6fa7ef0b72e17877696a264f0cabea3a570632edb15	processed-analysis	Processed public analysis artifact
-data/analysis/ablation_predictions/pca_only_k32/seed_1.npz	87508	00f8557dbba08ccc4efca3beaf53de9058c9080d07df5bb61cbf2bab8520f11d	processed-analysis	Processed public analysis artifact
-data/analysis/ablation_predictions/pca_only_k32/seed_2.npz	87513	5503cf1cb0400c61110adef6e5f571abbae4413de520fed5471601c7fc922e3f	processed-analysis	Processed public analysis artifact
-data/analysis/ablation_predictions/primary_k32/seed_0.npz	87490	5f423b04eae1f2ed8bfb79603647566623081c3ef0d8fdd7fbf1009dcfe940b4	processed-analysis	Processed public analysis artifact
-data/analysis/ablation_predictions/primary_k32/seed_1.npz	87479	b5115c87dbd84c03cf9528f20833518af86712e1bc7b2064b462d8907c899a32	processed-analysis	Processed public analysis artifact
-data/analysis/ablation_predictions/primary_k32/seed_2.npz	87561	46664afa71caad156d4ca2e59b1bff34b76be7e3b0cd1f39945a713dc96485ea	processed-analysis	Processed public analysis artifact
-data/analysis/baseline_per_case.json	5974	0da7fa3fa21431558cb016bd99a46790334c4d6dd906bae678d79c652a9b7e3f	processed-analysis	Processed public analysis artifact
-data/analysis/expected_statistics.json	3688	ae2277e3689fa35b4b50938cb71b3ef0264ff533c5bb93f2318d793b11a4f017	processed-analysis	Processed public analysis artifact
-data/analysis/learning_curves/seed_0.json	1449	b5a81bef3e66558794d3eeb6cc9d33f66e7b1268f2870aacebff312256e6074a	processed-analysis	Processed public analysis artifact
-data/analysis/learning_curves/seed_1.json	1446	cd56e4e95989fe1c041e3df63aa065c4424bab1d44b07cd69cf694aa921d6104	processed-analysis	Processed public analysis artifact
-data/analysis/learning_curves/seed_2.json	1445	46ab27b6244a1b347993f7f21aaa20f1ef473d7a3f3c971ed9853b48f94792fb	processed-analysis	Processed public analysis artifact
-data/analysis/primary_test_predictions.npz	211718	90df0e078c5d423df7e2d04a52b1063c64db9ef2b12c21509a53eecc75105902	processed-analysis	Processed public analysis artifact
-data/analysis/split_predictions/split_1/mechanics_seed_0.npz	87528	729e73ad66e02f533379c4a1d9b883ec225c8955e1c24e85ea909465f6277977	processed-analysis	Processed public analysis artifact
-data/analysis/split_predictions/split_1/mechanics_seed_1.npz	87527	9eb0b9f443a956c87d4484a32a1d4075f7d1d3ffc4ce99e6c54752d0a388adbe	processed-analysis	Processed public analysis artifact
-data/analysis/split_predictions/split_1/mechanics_seed_2.npz	87573	e90b08050efc560cb2155e940181418c0c1089ad06f8bba4bf0f2ada49304be5	processed-analysis	Processed public analysis artifact
-data/analysis/split_predictions/split_1/temperature_seed_0.npz	27475	6c963e9d8313cdbb835f274a119cea032252baf4425805915262631506787512	processed-analysis	Processed public analysis artifact
-data/analysis/split_predictions/split_1/temperature_seed_1.npz	27449	efaa5956a5da6e2ef83a30e049037212df59260db98d635a9a373d456a2258a5	processed-analysis	Processed public analysis artifact
-data/analysis/split_predictions/split_1/temperature_seed_2.npz	27395	69af5992e39ade31378dbee2a8f804be1d8606df820b3e6b1518cf63929a239e	processed-analysis	Processed public analysis artifact
-data/analysis/split_predictions/split_2/mechanics_seed_0.npz	87612	af39a92303b4d9a3fc69a97f279ccbb2e5bf49a3813c5a0b3e80efc38d111e28	processed-analysis	Processed public analysis artifact
-data/analysis/split_predictions/split_2/mechanics_seed_1.npz	87633	ad0ad479c08bdba35ec087803a5be2de1cee28a47b7a12bfc6fdf2423e0113a6	processed-analysis	Processed public analysis artifact
-data/analysis/split_predictions/split_2/mechanics_seed_2.npz	87608	78083edfc09f04b9552438e76c921591923712dd7e36643f99361ba1d41c8ed4	processed-analysis	Processed public analysis artifact
-data/analysis/split_predictions/split_2/temperature_seed_0.npz	27359	13ca2bd0f221e69dd91e07950aee02e8b392d282fef09854202f04be8d282a9a	processed-analysis	Processed public analysis artifact
-data/analysis/split_predictions/split_2/temperature_seed_1.npz	27391	7324e4be354e178f83535b03073ca1ddce46b784ef00d2f3ac93a3e191a6f6ef	processed-analysis	Processed public analysis artifact
-data/analysis/split_predictions/split_2/temperature_seed_2.npz	27456	ac270a5b2c7ffd4051b247025b29716bb440aa377678af6be8a4f89f2c58672b	processed-analysis	Processed public analysis artifact
-data/analysis/split_predictions/split_3/mechanics_seed_0.npz	87500	ec80fa3f4f584f96d07529cf196b102870f5d24946e54c008ecadcfb90226ab4	processed-analysis	Processed public analysis artifact
-data/analysis/split_predictions/split_3/mechanics_seed_1.npz	87541	81f603f23dd8bf283586bb2471b3cbfb1d8fd2e8b03cd4021b5975f46f6d6ca4	processed-analysis	Processed public analysis artifact
-data/analysis/split_predictions/split_3/mechanics_seed_2.npz	87542	9f975f17811ef131cf85fa536caacc22eb7bcbbd02d3251697bd25c54d162ad5	processed-analysis	Processed public analysis artifact
-data/analysis/split_predictions/split_3/temperature_seed_0.npz	27329	b67cf240df6d0df797121d41fe071fff82f307127b0e7c5774daf1d810d035f4	processed-analysis	Processed public analysis artifact
-data/analysis/split_predictions/split_3/temperature_seed_1.npz	27289	d7c520f9349d7853eaececffcb680c743153e6f7603e0097f4f55fd23d13a059	processed-analysis	Processed public analysis artifact
-data/analysis/split_predictions/split_3/temperature_seed_2.npz	27307	be5e5347c606d1480a47addb6ee0495a9f744b0d1de6ee786f4b0a3fdf12e47e	processed-analysis	Processed public analysis artifact
-data/analysis/split_predictions/split_4/mechanics_seed_0.npz	87530	7a15299a756753a38045e0b44aa15c3dd6a4afb8df07ed10f5325cb3effb2cf2	processed-analysis	Processed public analysis artifact
-data/analysis/split_predictions/split_4/mechanics_seed_1.npz	87480	cbcb535953214b9be14a26b0b2bdd7a1321b137a5aad8920e26c31c29491272d	processed-analysis	Processed public analysis artifact
-data/analysis/split_predictions/split_4/mechanics_seed_2.npz	87517	ce1b4d436cf2eccaab922080d11369811fbc80a3232d8b9d7e02e545a9a54ae0	processed-analysis	Processed public analysis artifact
-data/analysis/split_predictions/split_4/temperature_seed_0.npz	27257	844faea9d71fed10e8f369e4126799d0e6379b65f4bcc60a8c71283edf10d7d3	processed-analysis	Processed public analysis artifact
-data/analysis/split_predictions/split_4/temperature_seed_1.npz	27307	97ee223ae2155f028c52c4308fa6219657f29f3151dc2e12408c8f938821a086	processed-analysis	Processed public analysis artifact
-data/analysis/split_predictions/split_4/temperature_seed_2.npz	27307	bed460c28d814f428a91cd0ce8476cb272b4648cf2dc423f39975b98d58c196e	processed-analysis	Processed public analysis artifact
-data/analysis/split_predictions/split_5/mechanics_seed_0.npz	87444	e68bd944bdffe12ba7a7599b09862ee58c9b40d736f2dec05e5d5a5572a3d32b	processed-analysis	Processed public analysis artifact
-data/analysis/split_predictions/split_5/mechanics_seed_1.npz	87519	e9b5f362d0ca7ab8325fac0956c4e331f79c0256e0491ac04a94b14f184de709	processed-analysis	Processed public analysis artifact
-data/analysis/split_predictions/split_5/mechanics_seed_2.npz	87502	9f51f33b0eeaee2f43bd2abbeec65124657ab346f0aca49ec9f63a630555eac4	processed-analysis	Processed public analysis artifact
-data/analysis/split_predictions/split_5/temperature_seed_0.npz	27324	b99bdab70eb75a539bb29676382344aa3b01fcf7366ad8178ba14a020b002ed7	processed-analysis	Processed public analysis artifact
-data/analysis/split_predictions/split_5/temperature_seed_1.npz	27313	c49de7108a66b127e5be2231fdc2c64d72e978dfd7510162a9af80237ee638c9	processed-analysis	Processed public analysis artifact
-data/analysis/split_predictions/split_5/temperature_seed_2.npz	27340	3101beec35bfb934be2c294370a1b1cdb90bff3f7acffe952f853cee43861470	processed-analysis	Processed public analysis artifact
-data/ct_params.npy	4128	7db8ee8f13c9b6c5d986cef57889a3d6b928e6f9c3663803fcb2d356d973f074	synthetic-data	Synthetic public reference array
-data/profiles_NM.npz	1786084	f604b4bb3514c55fd603d02088d300028235f0294a76eec19a2d10b3fd6d7bdc	synthetic-data	Synthetic public reference array
-data/tprofiles_T.npz	320508	4c6fbb482c006acd68d7e7a98b00b9a2a6d838bd643592a99f01184166fe0aec	synthetic-data	Synthetic public reference array
-models/_stage3_T_model_nc0_nobc_nopca.pt	1061229	fc1a45d92daf4a7d4670c616eb3143219bbda54b723b75a55756e80c2fe56da1	model-checkpoint	Released PyTorch checkpoint
-models/_stage3_T_model_nc1_nobc_nopca.pt	1061229	0b1f0e7b0b07ca9e45b9328a47ef54c90c3165266ecb34a0d64ed6d6f8353bdb	model-checkpoint	Released PyTorch checkpoint
-models/_stage3_T_model_nc2_nobc_nopca.pt	1061229	3ca24b477ee744b0067c87add4f80d091b3e400963b8cd423f24ce78e4dc98cd	model-checkpoint	Released PyTorch checkpoint
-models/_stage3_shell_model_ncs0_nobc_nopca.pt	3182919	a93b8b9fb51c5753a83188be82e42c99116fc9f87ec1833e40d2c3c8d6cb55aa	model-checkpoint	Released PyTorch checkpoint
-models/_stage3_shell_model_ncs1_nobc_nopca.pt	3182919	d1fa97cc569f8a13b1bd2d32dd22a97e008753354e13e505e3cc00f4090c4a7f	model-checkpoint	Released PyTorch checkpoint
-models/_stage3_shell_model_ncs2_nobc_nopca.pt	3182919	16ae0507d7fb0b4fd9ae2198291712c69115d1e288ce39c07ee2f72664aca43a	model-checkpoint	Released PyTorch checkpoint
+.gitattributes	85	f9e652439f38a6c4346ed66962d18200d4ee63da5809a11f88b4dbeb8ee1c4cf	metadata	Stores all files byte for byte
+.gitignore	42	a916e07b4b9d4f3a0289126e7043f8de9209ed4a3742eb16114bdccd938309e9	metadata	Files ignored by git
+CITATION.cff	609	bc37af7dab5c30547bb5dbc148c696649f22af224099d88a3dff01d39bacf016	metadata	Citation metadata
+DATA_DICTIONARY.md	12968	b407ed34f240a20891179991098a4140dfe0e20e48a6dec93afa48d194f901a6	documentation	Names, shapes and units of all arrays and tables
+LICENSE	1126	ebfd6c428c3dec7adec398f6d9679979db1f448c7ff8abe16e1e9b6b8ed84069	licence	MIT licence of the code and the trained weights
+LICENSE-DATA	482	32148ddade07343c0b86e60c01ad950a4f8656717643f033cc7340ad5e0ec3d8	licence	CC BY 4.0 licence of the data and the stored predictions
+README.md	7220	ae8bf2f7300b07d5b5f7098a1f28a61436b211bf17ad5db49c68a07804134a69	documentation	Overview, contents, commands and scope of the release
+code/baselines.py	5040	8dff169edb5e285d34b59656f01b0195ab433bb07daf2c298063b74c8164994c	code	Linear and Gaussian-process baselines
+code/closed_ring.py	5690	ef96525097f04d91764572f46dd421fa1cdfadf5768b2dd63f6b16b1e8099130	code	Closed-ring family: operator and command-line prediction
+code/common.py	2081	12316379bde4f279a78052dd44a55cf3838305b4b3326479ccae05efe07c627a	code	Helpers shared by the three families
+code/filled.py	6211	22ecc695a7c99f244965ff8d8a064774751e8b4f90972307913c3917a04c4e8d	code	Filled family: two-stage operator
+code/insulated.py	6236	91508536715266aae0f636cd71415bc964a71bcb55071ce8ae17efb793e94f6d	code	Insulated family: design-parameter and shape-input operators
+code/opnn.py	1440	790f448f9579230c33f7961bc6ab0923d1ce76ca14249b6851bc173efa87ea00	code	Branch-trunk network
+code/reproduce_tables.py	11228	7c6e087f8cc989a4078caea9faaa87144a5afb9de84d6b8f88502a5d35cdb502	code	Recomputes the headline errors and compares them with the printed values
+code/train_closed_ring.py	5930	c1f9a210778ae622e54a79beda787d283d60d11124a999d3ba7d5ce46b6aa46a	code	Closed-ring family: training
+code/train_filled.py	9446	7c5c903cf759fb75321a270265ab82ecd3e0f586175c8fd3cc7809d0b10f4955	code	Filled family: training of both stages
+code/train_insulated.py	8581	47a5fabf2461fe8a0408b8fafbc7d0c150c80595393d50dc6a28af64f77157db	code	Insulated family: training of both stages
+code/verify_release.py	4774	0727e5d631e9ec987458071e46ead7c0dfbcfd436151c5d4b54cf36b0a042895	code	Checks every file against SHA256SUMS and MANIFEST.tsv
+data/closed_ring/design.csv	13815	cba177988ed47b95e23b7d6c4cb5db393f15c3a89c9e34595eaa3f80375c8d79	design-inputs	Closed-ring family: the four inputs and the role of each of the 164 sections
+data/closed_ring/profiles_test.npz	483120	9b5537b1d9f687a10eef769a329002ddf0082cc60a8fafe95f4da9a5c512e77c	reference-profiles	Closed-ring family, test sections: design parameters and finite element reference profiles
+data/closed_ring/profiles_train.npz	1154972	bb726ba10fe3d4a51cf24d47820268f989d666085974254ee156f0bc0b79f4a4	reference-profiles	Closed-ring family, train sections: design parameters and finite element reference profiles
+data/closed_ring/profiles_validation.npz	339387	86c581a935362eb829d4cd6b92806f72dc488572b4e80d33519ee5cd1cd7dcbc	reference-profiles	Closed-ring family, validation sections: design parameters and finite element reference profiles
+data/closed_ring/split.json	1187	c72bd3d15e122df0be261d57ee319311898aef15e98acdf8498532c29f0e202b	design-inputs	Closed-ring family: section numbers of the 96/28/40 split
+data/expected_numbers.json	5750	bbd5c21dbc45a032db5573f0c3f9ba7d6ce71eecc0ea98a4a30408d789732cf9	expected-values	Values printed in the manuscript, compared by code/reproduce_tables.py
+data/filled/design_test1.csv	16203	b73b267b8c9e32fb37c66acb8d0488e803d7341d27633cd88cea89cb93370ca7	design-inputs	Filled family, test1: the eight inputs of each section
+data/filled/design_test2.csv	16205	4005738550224a2ad50cb905cdad7494dbb81fe903b4fe4ece430762f224d380	design-inputs	Filled family, test2: the eight inputs of each section
+data/filled/design_test3.csv	16187	1595292e748110c291d20b741016591bbfcf93e1ea9232b3c72046c4076394c5	design-inputs	Filled family, test3: the eight inputs of each section
+data/filled/design_test4.csv	16176	18cfa41b7974064742f6d1c6ffd494607ee20d2e9493ad235d5915a655ac0bd9	design-inputs	Filled family, test4: the eight inputs of each section
+data/filled/design_train.csv	234992	3f8d153b2636fdd3d54fcda7ed644b7b14a44d4b012a052b480c26653afb8481	design-inputs	Filled family, train: the eight inputs of each section
+data/filled/design_validation.csv	16705	41ddf3f5c579e60942b66bf9cee94dfe50db8f5b37014af741d788ac2ebd495e	design-inputs	Filled family, validation: the eight inputs of each section
+data/filled/profiles_test1.npz	1344044	7f7ba8e00f5f35d31e2277c530f0b0336a8b49b6b2aa9ee0711ff88ee60aabaf	reference-profiles	Filled family, test1: design parameters and finite element reference profiles
+data/filled/profiles_test2.npz	1344162	f27021b61935a8cabf3f77942c565170fa4ef03a2ed0606eefdba1ac5dc419e2	reference-profiles	Filled family, test2: design parameters and finite element reference profiles
+data/filled/profiles_test3.npz	1344635	e093b69e3e3658bdc8933e7a1e6ec1fb8c3d77c2bff68e7918d0a7257be697f6	reference-profiles	Filled family, test3: design parameters and finite element reference profiles
+data/filled/profiles_test4.npz	1344227	3bed56935f4803a755aa420ee7775f1876c5d7d7a1b230279ee981b4f6c74a8b	reference-profiles	Filled family, test4: design parameters and finite element reference profiles
+data/filled/profiles_train.npz	18747901	6fbab583fcd05fad591d2bd5d273d8331f8d567583ba4fb5842f10398d863a85	reference-profiles	Filled family, train: design parameters and finite element reference profiles
+data/filled/profiles_validation.npz	1344121	4b86dbb1ea074bf43371d4bccfc77ef64a871abae2d1781784ece8f2a4187424	reference-profiles	Filled family, validation: design parameters and finite element reference profiles
+data/filled/stations_test1.npz	1615219	2dcdbc76bf7880b31b4f6388a52caecc94258c48107dd75d2acdae52bd91d7f3	station-inputs	Filled family, test1: geometric station inputs of the second stage
+data/filled/stations_test2.npz	1618025	39672f37d60db2d9ba303cc9942734eb9ae79967dc94895619efc6376e5f1e3c	station-inputs	Filled family, test2: geometric station inputs of the second stage
+data/filled/stations_test3.npz	1617178	408775eb54980011afad7f76960611f7fbd8c14ea0c1d0a603dfc46ad0adfc23	station-inputs	Filled family, test3: geometric station inputs of the second stage
+data/filled/stations_test4.npz	1615010	c52a6fb0e7097d6508e3510d1b9413648c723f829613320066b4861c565c79dc	station-inputs	Filled family, test4: geometric station inputs of the second stage
+data/filled/stations_train.npz	22584234	0b4eefb353f9c74c490535cf6c120162860d162e53726527071c19b290662347	station-inputs	Filled family, train: geometric station inputs of the second stage
+data/filled/stations_validation.npz	1612894	003065b88e1f52034b38edfa6a6038db6717c07ecbbf6d2f1c8c3bb6688b5e3d	station-inputs	Filled family, validation: geometric station inputs of the second stage
+data/insulated/design_check_casting.json	507	35c5abec73269bb1f83c111ffbcd7975ab9f35b4c97f44c953c79408393ee243	design-inputs	Insulated family, the monitored design section at casting temperatures of 38 and 54 deg C: design, thermal and deviation inputs of each section
+data/insulated/design_check_chart_tc38.json	1532	d114e2be4e48aadd235c0b0b19e21cf16f61630cef7ff40a30d701337adef01e	design-inputs	Insulated family, finite element checks of the design chart, casting temperature 38 deg C: design, thermal and deviation inputs of each section
+data/insulated/design_check_chart_tc45.json	3027	4afa25e4517b3294cc9036c309d26a33f60fdbbe36526fa910a6d553303a02be	design-inputs	Insulated family, finite element checks of the design chart, casting temperature 45 deg C: design, thermal and deviation inputs of each section
+data/insulated/design_check_chart_tc54.json	2045	a6ae34eaac1fd6d6d77785f058e7e5ac6f273f2db74776e7978b199ddaa23178	design-inputs	Insulated family, finite element checks of the design chart, casting temperature 54 deg C: design, thermal and deviation inputs of each section
+data/insulated/design_check_insulation_stiffness.json	924	19b12357b49f7c03384ab27b42b50552259e036991907d40e6745ddcb47689ed	design-inputs	Insulated family, the monitored design section with stiffer insulation layers: design, thermal and deviation inputs of each section
+data/insulated/design_monitored_design.json	262	605e9ad0d120b0285f59458415e04db29364db14105b9b22c1149f00c0edcc4f	design-inputs	Insulated family, the monitored design section (finite element model output): design, thermal and deviation inputs of each section
+data/insulated/design_test_dev.json	48453	d8f2ecb361d11e16deff4d80732596451806fc738f1169f86658f74b1fcb31af	design-inputs	Insulated family, test sections with one or two thickness deviations: design, thermal and deviation inputs of each section
+data/insulated/design_test_dev3.json	29151	3b8fdddf0bba70ae17faa41772767710e821dc8526ac593233d7eb93687156bf	design-inputs	Insulated family, test sections with three thickness deviations: design, thermal and deviation inputs of each section
+data/insulated/design_test_nom.json	39241	1eeda279b6740766ff35d6155e6f7096f0a5f0063dd03209c469c19f0553add6	design-inputs	Insulated family, test sections without deviations: design, thermal and deviation inputs of each section
+data/insulated/design_train.json	612584	2451948eab4fb4c3fd8ddadcda4d6d81a3632ef2dcfc1570974c9f2549c709f6	design-inputs	Insulated family, training sections: design, thermal and deviation inputs of each section
+data/insulated/design_validation.json	66045	9bb4fbde3bffdf86985a764831ccbb7f78d9697955f72948453601db2ff31154	design-inputs	Insulated family, validation sections: design, thermal and deviation inputs of each section
+data/insulated/profiles_check_casting.npz	41920	04cc145df83f55c9f84301621dd934899bb196f9557c82680e5f4966134de77c	reference-profiles	Insulated family, the monitored design section at casting temperatures of 38 and 54 deg C: inputs, station inputs and finite element reference profiles
+data/insulated/profiles_check_chart_tc38.npz	108393	2888d66318fa9039c84d45dd738a77a2b1d15bb32a6bd88f300119428003e4a1	reference-profiles	Insulated family, finite element checks of the design chart, casting temperature 38 deg C: inputs, station inputs and finite element reference profiles
+data/insulated/profiles_check_chart_tc45.npz	182273	9257ed1934eae563f49045d843338809a6a5d16ece65bec314950ccbaf0810b7	reference-profiles	Insulated family, finite element checks of the design chart, casting temperature 45 deg C: inputs, station inputs and finite element reference profiles
+data/insulated/profiles_check_chart_tc54.npz	142606	434a474f737c368b87288d2056179a66e4716f562f8313221d2916774444321a	reference-profiles	Insulated family, finite element checks of the design chart, casting temperature 54 deg C: inputs, station inputs and finite element reference profiles
+data/insulated/profiles_check_insulation_stiffness.npz	53609	a605442ff68e35275b72ed39384218a7d17e0ea7aa876c3a379b5c24ef713d14	reference-profiles	Insulated family, the monitored design section with stiffer insulation layers: inputs, station inputs and finite element reference profiles
+data/insulated/profiles_monitored_design.npz	32421	bc30a5073f8e27dabcff03fd6058df46fe51e78914c2c8a95dd7206f3329b225	reference-profiles	Insulated family, the monitored design section (finite element model output): inputs, station inputs and finite element reference profiles
+data/insulated/profiles_test_dev.npz	2778949	4c6b2a8ec143eef958ca777e9ec98610ec93e069ad762c93dd188ebb2a046d40	reference-profiles	Insulated family, test sections with one or two thickness deviations: inputs, station inputs and finite element reference profiles
+data/insulated/profiles_test_dev3.npz	1397092	7329fecab086ac88b3b521d5f71aa37d12182fad888adbd7531783c1ac9429b8	reference-profiles	Insulated family, test sections with three thickness deviations: inputs, station inputs and finite element reference profiles
+data/insulated/profiles_test_nom.npz	2717384	ef83966e962e55e3def59997448dcabb577c0205610cebdb00b2b1fb4cecad84	reference-profiles	Insulated family, test sections without deviations: inputs, station inputs and finite element reference profiles
+data/insulated/profiles_train.npz	38403915	ffb21e538fc42f5612104c296219a5c9f08ed79fc4702698a11c33550c3937c4	reference-profiles	Insulated family, training sections: inputs, station inputs and finite element reference profiles
+data/insulated/profiles_validation.npz	4115534	20353de728dc1f0012479db48a075320b6d5c12279a154be1f020d0c085abe90	reference-profiles	Insulated family, validation sections: inputs, station inputs and finite element reference profiles
+models/closed_ring/20261022/best_models.pt	4226071	03bae8d12fa9a951f31580c03bbae6e8f404dcd07db18c71b4dd1bbb0c36580e	trained-weights	Closed-ring operator, seed 20261022: state dictionaries of the eight networks
+models/closed_ring/20261022/history.json	3856	8c3eb22c44dccbc9db567d03cad652c50efbbba8e8f24fcd7a41b88759b071b8	model-configuration	Closed-ring operator, seed 20261022: training and validation history
+models/closed_ring/20261022/run.json	226	aae821a114d978943636fddfb714ececbbdd0de1bfca375d5e794723bf23cd57	model-configuration	Closed-ring operator, seed 20261022: selected step and validation error
+models/closed_ring/20261023/best_models.pt	4226071	2b1c9b55735e4b2e8bdfd852bc7a0a53d53ddd5fcc13830807bc528edb25a1d3	trained-weights	Closed-ring operator, seed 20261023: state dictionaries of the eight networks
+models/closed_ring/20261023/history.json	3965	446f5d81de6747da60af128f67c07b4de0b4d2a44ea5c716de501f78d276cf80	model-configuration	Closed-ring operator, seed 20261023: training and validation history
+models/closed_ring/20261023/run.json	225	2387b5a39834326e67379444deb631ecd9a0d8a48f88b8bd666b4ac1ac19a396	model-configuration	Closed-ring operator, seed 20261023: selected step and validation error
+models/closed_ring/20261024/best_models.pt	4226071	d1b3212395ed5fbc24c2de27363f3f2f119e51b23effc803f764832ec60a8388	trained-weights	Closed-ring operator, seed 20261024: state dictionaries of the eight networks
+models/closed_ring/20261024/history.json	3640	210dfd1093a1ae587eceb54da0a8e4ea2c4be7aa007f93bb677382f9d49aa871	model-configuration	Closed-ring operator, seed 20261024: training and validation history
+models/closed_ring/20261024/run.json	226	5e5a1f4659aac9e095fe6e4cc21f0ec534c3e521f4dedc17a4ad7ff25563c0de	model-configuration	Closed-ring operator, seed 20261024: selected step and validation error
+models/closed_ring/config.json	3099	21ad79ee2d7db1537d47a85beb6a45acb10d43649f6421e99b773d06264e457a	model-configuration	Closed-ring operator: architecture, training settings and split
+models/closed_ring/preprocessing.npz	4327	71037316ea5a84660987d88c3d2433c39181f243a60e8462dd08e50f8fdc5c86	model-configuration	Closed-ring operator: input and output normalisation, station coordinate
+models/filled/first_stage/20261022/best_models.pt	8630231	954929dc8851bd336e8073a7fee427e8c514702a22dc945f8ef4c39a359671ef	trained-weights	Filled family, first stage, seed 20261022: state dictionaries of the eight networks
+models/filled/first_stage/20261022/history.json	7525	6ead640a0c872c0f2a230745c817fbc84400c18c771f6143e02dad9120c80bbd	model-configuration	Filled family, first stage, seed 20261022: training and validation history
+models/filled/first_stage/20261023/best_models.pt	8630231	7367820e5c8949ab0d6d71ae4e2cc0d1cbc68d61d25ac61c6d291dc25bbb727b	trained-weights	Filled family, first stage, seed 20261023: state dictionaries of the eight networks
+models/filled/first_stage/20261023/history.json	7537	5d986ea7347ea6300722d40d751af12be0ec1a74d7d7cb094caec4e00ae5aee5	model-configuration	Filled family, first stage, seed 20261023: training and validation history
+models/filled/first_stage/20261024/best_models.pt	8630231	7778f68eaae6cbcdb5f1d192d802507d636f88aaddb703e1f1ecb646703815d0	trained-weights	Filled family, first stage, seed 20261024: state dictionaries of the eight networks
+models/filled/first_stage/20261024/history.json	7532	b786c5ace8ea124322576c08ce62672fd1795e82a5988e88053420ada22001ef	model-configuration	Filled family, first stage, seed 20261024: training and validation history
+models/filled/first_stage/20261025/best_models.pt	8630231	e5b79d483ccca46997fad6db31689993ce204c8accd5a14ced15fabff8da7b1f	trained-weights	Filled family, first stage, seed 20261025: state dictionaries of the eight networks
+models/filled/first_stage/20261025/history.json	7520	1cbb78b544b5457a3b48d3ece7f335932864b9b9b118703ce150c8115ce6f998	model-configuration	Filled family, first stage, seed 20261025: training and validation history
+models/filled/first_stage/20261026/best_models.pt	8630231	af50cba8d16091729f34f5516d6d41a5cddf14a0361c2de1123ec26b56d54a94	trained-weights	Filled family, first stage, seed 20261026: state dictionaries of the eight networks
+models/filled/first_stage/20261026/history.json	7519	43484af11c929c2980c4d9b46989064ed25ece6193a8b34f657e1180f5a496ee	model-configuration	Filled family, first stage, seed 20261026: training and validation history
+models/filled/first_stage/config.json	1182	71ba3811cffdcd2503f104c6ef797a18af1a1f3453e86961e891c720bea0b764	model-configuration	Filled family, first stage: architecture and training settings
+models/filled/first_stage/preprocessing.npz	4363	3bd3527038879b8b840b8956d049d362229e284e2b199bde8ea6f20b53808bae	model-configuration	Filled family, first stage: normalisation and station coordinate
+models/filled/first_stage/training_complete.json	779	06a8cc95fe1e2e4fa3b2ed10f7a54e6c685c1d23f3be51dee282880e19747b4c	model-configuration	Filled family, first stage: selected steps and validation errors
+models/filled/second_stage/20261022/best.pt	874069	7a35d815db6aab5291043e13d145357c9714edb50bcb31abc15ca01c83ab7a4e	trained-weights	Filled family, second stage, seed 20261022: state dictionary
+models/filled/second_stage/20261023/best.pt	874069	4c0ff4925290666263b87aab46daf12a6885621056268243241c91c6fe71fad5	trained-weights	Filled family, second stage, seed 20261023: state dictionary
+models/filled/second_stage/20261024/best.pt	874069	71249194d837c2c24d33c06d40fca555bf6ba5abebdb1cb37d7f28a5b8c5ae33	trained-weights	Filled family, second stage, seed 20261024: state dictionary
+models/filled/second_stage/20261025/best.pt	874069	b7c26ff541352d7874f127bf13ce7e7bad521a0aef056f1d7b0bd02d5b4b8554	trained-weights	Filled family, second stage, seed 20261025: state dictionary
+models/filled/second_stage/20261026/best.pt	874069	b5c151a1f4ede8dd26fb5c5d2bbf9bab3dce5e0cece1e59ef83403be723a1536	trained-weights	Filled family, second stage, seed 20261026: state dictionary
+models/filled/second_stage/config.json	1000	f9292e96bf7024d0d4e80cf80421335ff49037885c20f25d48eb1255f4fa7bab	model-configuration	Filled family, second stage: architecture and training settings
+models/filled/second_stage/preprocessing.npz	1041	b8973764d344baaa9ba50abb90d64b3557b25d9f79d9efb1c270e6105c7ddfd1	model-configuration	Filled family, second stage: normalisation of the inputs and of the moment correction
+models/filled/second_stage/training_complete.json	911	37ac76e602ef62e070c93f22a859d6e8fe1e44f8e0bd9cf68ce2d918b72f2ce5	model-configuration	Filled family, second stage: selected steps and validation errors
+models/insulated/A/first_stage/20261022/best_models.pt	8653783	ed51fd5d5a570b04a540205b6adfa64981dae05beccba24d2de0e87e1b58e6db	trained-weights	Insulated family, operator A, first stage, seed 20261022: state dictionaries of the eight networks
+models/insulated/A/first_stage/20261023/best_models.pt	8653783	83e419a64675f0de2c4eb5a9329791f2f59e80c415eebcbf99b01b0d49fbc897	trained-weights	Insulated family, operator A, first stage, seed 20261023: state dictionaries of the eight networks
+models/insulated/A/first_stage/20261024/best_models.pt	8653783	8cb9cd6b6ac2000882b9ebcb2db3807846619c461bd7e481ee4dd6f1a083ab00	trained-weights	Insulated family, operator A, first stage, seed 20261024: state dictionaries of the eight networks
+models/insulated/A/first_stage/20261025/best_models.pt	8653783	52d9c4c9c3b6aee2f8f40c9e4ae954c315fefd8e7a44d8f7b4080bf2de82da8e	trained-weights	Insulated family, operator A, first stage, seed 20261025: state dictionaries of the eight networks
+models/insulated/A/first_stage/20261026/best_models.pt	8653783	5a0cb1e344964937c449af5d5ec93a18ede5da8e57b7cbbc238372cae738fe7e	trained-weights	Insulated family, operator A, first stage, seed 20261026: state dictionaries of the eight networks
+models/insulated/A/first_stage/config.json	774	03da43a7426cfeefb538069bb091750170c16bd33f15e0ebbe2b2d33c931e59f	model-configuration	Insulated family, operator A, first stage: architecture and training settings
+models/insulated/A/first_stage/preprocessing.npz	4248	f305d87a7bcb7c1b52a736214b80d9632edc4fcc85db8b62a115fadf8a7f3051	model-configuration	Insulated family, operator A, first stage: normalisation
+models/insulated/A/first_stage/training_complete.json	673	3d71512ebe3687ec9220f97ad780e5b6c5c13c7508f1081325831db7534e69fe	model-configuration	Insulated family, operator A, first stage: selected steps and validation errors
+models/insulated/A/second_stage/20261022/best.pt	880149	33ba6b45f62f0dcee4b5f2625699f45c03be0b4883da258095ddc47dfd32891e	trained-weights	Insulated family, operator A, second stage, seed 20261022: state dictionary
+models/insulated/A/second_stage/20261023/best.pt	880149	eda3dae453297b017502023071a4194dc28c44520e95e94492327c42e20dcbf3	trained-weights	Insulated family, operator A, second stage, seed 20261023: state dictionary
+models/insulated/A/second_stage/20261024/best.pt	880149	04ecdf6cb5825497b7ba78c488ae74b2fd27f7a9caf40d174e77a638a2c90522	trained-weights	Insulated family, operator A, second stage, seed 20261024: state dictionary
+models/insulated/A/second_stage/20261025/best.pt	880149	41f4d7703fd538b2ccaf9becce305ba547e0db6fb33109efeffffa7d52cc3222	trained-weights	Insulated family, operator A, second stage, seed 20261025: state dictionary
+models/insulated/A/second_stage/20261026/best.pt	880149	0835a77ff030bee52d41d885f402d928fbc9db8cc5267564752efc8ebce26729	trained-weights	Insulated family, operator A, second stage, seed 20261026: state dictionary
+models/insulated/A/second_stage/config.json	313	a88c9cd5060c185a4e7564913804b4513aa471c5739d2a3e434b3de898bbf856	model-configuration	Insulated family, operator A, second stage: architecture and training settings
+models/insulated/A/second_stage/preprocessing.npz	1142	e9cf0faf02404ccf2286388ded4b43fec478f7a57160fcc8a76d2e270f119df9	model-configuration	Insulated family, operator A, second stage: normalisation
+models/insulated/A/second_stage/training_complete.json	685	267ce7beefb6619d93846addfdd27494bcb02e094da44e3142438f8533b80ef1	model-configuration	Insulated family, operator A, second stage: selected steps and validation errors
+models/insulated/B/first_stage/20261022/best_models.pt	8692183	a40471961b5e31086ff6598b706181106618d592226e22fc95ed7884e2422068	trained-weights	Insulated family, operator B, first stage, seed 20261022: state dictionaries of the eight networks
+models/insulated/B/first_stage/20261023/best_models.pt	8692183	0d9bf624ad03bf357d8734251bd9dc27bb5576d93ddd49b7228b9ef0b077b5bd	trained-weights	Insulated family, operator B, first stage, seed 20261023: state dictionaries of the eight networks
+models/insulated/B/first_stage/20261024/best_models.pt	8692183	36c5e6c9a5a2a8eac7b6981ec71c210b1838002af1b4ba02b4453f76feaed35f	trained-weights	Insulated family, operator B, first stage, seed 20261024: state dictionaries of the eight networks
+models/insulated/B/first_stage/20261025/best_models.pt	8692183	3b9438d553babe5784a65aa59a3632ebcb1ed6d75186a2599427933c8bfa895f	trained-weights	Insulated family, operator B, first stage, seed 20261025: state dictionaries of the eight networks
+models/insulated/B/first_stage/20261026/best_models.pt	8692183	f1896708b38da8e2e7c6dfccaa3074d98965ca7d0024bf423032976894be29ae	trained-weights	Insulated family, operator B, first stage, seed 20261026: state dictionaries of the eight networks
+models/insulated/B/first_stage/config.json	774	44864d2c1a069da0fd24460d5ea29524f3cf5dc36519979227326c6e8fdefdab	model-configuration	Insulated family, operator B, first stage: architecture and training settings
+models/insulated/B/first_stage/preprocessing.npz	4382	a39a9191c3508010f2dc42bdc980906e1d0a3c5ec3d8e968953334673a0004b9	model-configuration	Insulated family, operator B, first stage: normalisation
+models/insulated/B/first_stage/training_complete.json	671	f444d707da09ef3f804aa6e20eb0e7acd2e7d91e55f658cec6154e466990aaf5	model-configuration	Insulated family, operator B, first stage: selected steps and validation errors
+models/insulated/B/second_stage/20261022/best.pt	888341	0b94a9421f52d586300b3452f5611da825214bb1456402d2d859e338102eb8df	trained-weights	Insulated family, operator B, second stage, seed 20261022: state dictionary
+models/insulated/B/second_stage/20261023/best.pt	888341	a1bd6069bb55af396604ca610ecc9bd06bd1ccfa85b79ffa2563bb59c78f6d7e	trained-weights	Insulated family, operator B, second stage, seed 20261023: state dictionary
+models/insulated/B/second_stage/20261024/best.pt	888341	25bd656ac7d6716c593388cb929b1aa69fc3bc9cc21f22f1d024790d5fd1e6fc	trained-weights	Insulated family, operator B, second stage, seed 20261024: state dictionary
+models/insulated/B/second_stage/20261025/best.pt	888341	71aac2b8f102227e6f37f1b1297aa9c36b79dd94e531736feaf127c0425d36bd	trained-weights	Insulated family, operator B, second stage, seed 20261025: state dictionary
+models/insulated/B/second_stage/20261026/best.pt	888341	2f985b70e3fadbbb1e759f2449e7d24d6dc88859e89fc913e4ab62987ccb8ec4	trained-weights	Insulated family, operator B, second stage, seed 20261026: state dictionary
+models/insulated/B/second_stage/config.json	313	a972b723a9f756bb1ad7162713be865076c179deb2fdde0f754e4178561b5da5	model-configuration	Insulated family, operator B, second stage: architecture and training settings
+models/insulated/B/second_stage/preprocessing.npz	1276	714300a02a1d8db6061c8d2b32449599a9785310f76ef7f0b1c1545be7fa13ce	model-configuration	Insulated family, operator B, second stage: normalisation
+models/insulated/B/second_stage/training_complete.json	683	c0f6e398157fd5cb866e116eed0ac7c7e5d01c8e1d891543859b48098364ce52	model-configuration	Insulated family, operator B, second stage: selected steps and validation errors
+predictions/closed_ring/baselines_test.npz	243466	8581690f70813d287a3c502792cbc5b1688b99d7e4c225ccb10e88e7af7cac13	predictions	Closed-ring family, 40 test sections: predictions of the linear and Gaussian-process baselines
+predictions/closed_ring/test_ensemble.npz	603184	3ef5790c6c5b3f29442ec6cca2845ed517d043c24202eaab41656427f5eaa048	predictions	Closed-ring operator on the 40 test sections: mean of the three seeds
+predictions/closed_ring/test_seed_20261022.npz	603454	5a8d9d37a3cec8f7437041d998bf81cb35eb917c6cdb361dec44e285acfdc8d8	predictions	Closed-ring operator on the 40 test sections: seed 20261022
+predictions/closed_ring/test_seed_20261023.npz	603604	493ccc5e4a4fa8e1e0519ded847af62593fe249fde9a6a49c291d1ef3cd5e905	predictions	Closed-ring operator on the 40 test sections: seed 20261023
+predictions/closed_ring/test_seed_20261024.npz	603658	a81cc751f2afc9b996599e3f285cf07af87191550963e6b8ce45c1d15c57dd58	predictions	Closed-ring operator on the 40 test sections: seed 20261024
+predictions/filled/baselines_test4.npz	608223	79ce0e5a8873876b1072f159a67edfdcb1d56516b0a45b6b10ad57a74991d11e	predictions	Filled family, test set 4: predictions of the linear and Gaussian-process baselines
+predictions/filled/test_errors.json	131908	50b7be4ecd3c09f4386761ed3acd82b230a01ed9e44fbe533cd406b15e487db8	predictions	Filled family: per-section errors of the two-stage operator, the first stage and the baselines on the test sets
+predictions/insulated/pred_monitored_design.npz	24129	713f2f271c195a7b8f2f92aaa20da5c6a31acf4a83d13575aefdd935fa8ad8cf	predictions	Insulated family, monitored_design: predictions of both operators and of the two baselines
+predictions/insulated/pred_test_dev.npz	2102972	7c4029ce1f552d35106fb54181eb9bbadf3aed5b639af4662d090dedc0ef8d8c	predictions	Insulated family, test_dev: predictions of both operators and of the two baselines
+predictions/insulated/pred_test_dev3.npz	1053129	d42efdfc103c82c955455c16d797566b682f8a28c42fbcbf295df5cc9d284006	predictions	Insulated family, test_dev3: predictions of both operators and of the two baselines
+predictions/insulated/pred_test_nom.npz	2100462	4ecf0c348a75bc4e9a21010ff3be22e04d6ce69c6e75ae56d68cc1615c4fd6ac	predictions	Insulated family, test_nom: predictions of both operators and of the two baselines
+requirements.txt	112	fde7c444add347290b0ba3159fe030b0f86f904f7e23825a6a882db9396548b4	metadata	Python dependencies
+tests/__init__.py	0	e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855	tests	Test package marker
+tests/test_no_private_paths.py	3365	2149ffa4b7cd4131a1e7e8ffabf68c83b21e0e68babc9755848c480e0455c202	tests	No private path or excluded identifier in the release
+tests/test_release_integrity.py	773	2e0b163c8a873ae2ef7b02850ef37ca9cf3cbf872ea13b64f442eaf9a66dc968	tests	Checksums, manifest and citation metadata
+tests/test_reproduction.py	683	f965eec1783228c9b029145eff420a194458a4a680491c33ec29a1d3ebe43726	tests	Smoke run of the reproduction on the closed-ring family

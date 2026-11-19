@@ -1,0 +1,86 @@
+{
+ "family": "filled",
+ "stage": "first",
+ "moment_loss_weight": 1.0,
+ "batch": 64,
+ "lr_drops": [
+  6000,
+  10000
+ ],
+ "inputs": [
+  "R_top",
+  "y_knee",
+  "R_inv_ratio",
+  "t",
+  "ln r_k",
+  "rho",
+  "phi",
+  "s"
+ ],
+ "seeds": [
+  20261022,
+  20261023,
+  20261024,
+  20261025,
+  20261026
+ ],
+ "fields": [
+  "eps_m",
+  "slope_ss",
+  "enn_c0",
+  "enn_slope",
+  "N",
+  "M",
+  "T_c0",
+  "T_slope"
+ ],
+ "branch1": [
+  20,
+  100,
+  100,
+  100
+ ],
+ "branch2": [
+  8,
+  150,
+  150,
+  150,
+  150,
+  150,
+  100
+ ],
+ "trunk": [
+  64,
+  150,
+  150,
+  150,
+  150,
+  150,
+  150,
+  100
+ ],
+ "KH": 32,
+ "max_updates": 24000,
+ "check_every": 250,
+ "minimum_updates": 4000,
+ "patience_updates": 24000,
+ "E_Pa": 32500000000.0,
+ "nu": 0.2,
+ "alpha_per_K": 1e-05,
+ "T_ref_C": 5.0,
+ "n_train": 1399,
+ "n_validation": 100,
+ "optimizer": {
+  "name": "Adam",
+  "lr": 0.001,
+  "decay_after_updates": [
+   6000,
+   10000
+  ],
+  "decay_factor": 0.1
+ },
+ "selection": "lowest validation recovered-M MSE / train M std squared",
+ "final_prediction": "equal-weight field mean of five seeds; N direct, M from strain and temperature heads",
+ "device": "NVIDIA GeForce RTX 5090",
+ "torch_version": "2.11.0+cu128"
+}

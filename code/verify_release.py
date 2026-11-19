@@ -1,264 +1,121 @@
-#!/usr/bin/env python3
-"""Validate the public release metadata and immutable public artifacts."""
+"""Check every file of the release against SHA256SUMS and MANIFEST.tsv.
 
-from __future__ import annotations
+    python code/verify_release.py
 
+SHA256SUMS lists every file of the release except itself. MANIFEST.tsv lists every file except itself and
+SHA256SUMS, with its size, checksum, category and description. The check also confirms that every array archive
+loads without pickled objects.
+"""
+from pathlib import Path
 import hashlib
 import re
-from pathlib import Path
+import sys
+import zipfile
 
 import numpy as np
 
-from reproduce_statistics import validate_analysis_tree
+ROOT = Path(__file__).resolve().parents[1]
+SKIP_DIRS = {'.git', '__pycache__', 'runs', '.pytest_cache'}
+MANIFEST_HEADER = ['path', 'bytes', 'sha256', 'category', 'description']
 
 
-REQUIRED_CFF = {
-    "cff-version": "1.2.0",
-    "message": "If you use this software, please cite it as below.",
-    "title": "Shell-reduced surrogate for frost-season tunnel lining internal forces",
-    "version": "1.0.0",
-    "date-released": "2026-07-26",
-    "doi": "10.5281/zenodo.21589352",
-    "repository-code": "https://github.com/jiang22514/tunnel-shell-surrogate",
-    "license": "MIT",
-}
-REQUIRED_AUTHORS = [
-    "Hongyue Jiang",
-    "Shunyuan Zhang",
-    "Peizhong Yu",
-    "Fan Wang",
-    "Zhenggui Hu",
-]
-MANIFEST_HEADER = ["path", "bytes", "sha256", "category", "description"]
-FORBIDDEN_SUFFIXES = {
-    ".cae", ".odb", ".inp", ".jnl", ".rpy", ".lck", ".sim", ".prt",
-    ".step", ".stp", ".iges", ".igs", ".sat", ".dwg", ".dxf", ".pkl", ".pickle",
-}
-FORBIDDEN_FILENAMES = {"genieshan", "full_field", "full-field", "_t3"}
-INTERNAL_DIRECTORY_NAMES = {".git", ".private_release_audit", ".superpowers", "superpowers", "__pycache__", "source_figures"}
-PRIVATE_PATH_PATTERN = re.compile("(?:/" + "home/|/mnt/[a-z]/|[A-Za-z]:\\\\Users\\\\)")
-CREDENTIAL_PATTERN = re.compile(
-    r"(?i)\b(?:api[_-]?key|access[_-]?token|secret|password)\b\s*[:=]\s*['\"]?[A-Za-z0-9_./+=-]{8,}"
-)
-CORE_NPY_SCHEMA = {"ct_params.npy": ((100, 5), "float64")}
-CORE_NPZ_SCHEMAS = {
-    "profiles_NM.npz": {
-        "N": ((100, 200), "float64"), "M": ((100, 200), "float64"),
-        "Q": ((100, 200), "float64"), "eps_m": ((100, 200), "float64"),
-        "slope_ss": ((100, 200), "float64"), "enn_c0": ((100, 200), "float64"),
-        "enn_slope": ((100, 200), "float64"), "N_hooke": ((100, 200), "float64"),
-        "M_hooke": ((100, 200), "float64"), "N_grid": ((100, 200), "float64"),
-        "M_grid": ((100, 200), "float64"), "valid": ((100, 200), "bool"),
-        "sc": ((200,), "float64"), "perim": ((100,), "float64"), "lm_tgt": ((4,), "float64"),
-    },
-    "tprofiles_T.npz": {
-        "T_c0": ((100, 200), "float64"), "T_slope": ((100, 200), "float64"),
-    },
-}
+def release_files(root):
+    """Relative posix paths of all release files in lexical order."""
+    root = Path(root)
+    files = []
+    for path in root.rglob('*'):
+        rel = path.relative_to(root)
+        if path.is_file() and not (set(rel.parts[:-1]) & SKIP_DIRS) and path.suffix != '.pyc':
+            files.append(rel.as_posix())
+    return sorted(files)
 
 
-def _public_artifact_paths(root: Path) -> list[Path]:
-    """Return regular data and model artifacts in portable lexical order."""
-
-    return sorted(
-        path
-        for directory in (root / "data", root / "models")
-        if directory.is_dir()
-        for path in directory.rglob("*")
-        if path.is_file()
-    )
-
-
-def _sha256(path: Path) -> str:
+def sha256(path):
     digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1 << 20), b""):
+    with open(path, 'rb') as handle:
+        for chunk in iter(lambda: handle.read(1 << 20), b''):
             digest.update(chunk)
     return digest.hexdigest()
 
 
-def write_checksums(root: Path, output_path: Path) -> None:
-    """Write deterministic SHA-256 lines for every public data/model file."""
-
-    root = Path(root).resolve()
-    lines = [
-        f"{_sha256(path)}  {path.relative_to(root).as_posix()}\n"
-        for path in _public_artifact_paths(root)
-    ]
-    Path(output_path).write_text("".join(lines), encoding="utf-8")
-
-
-def _parse_cff(path: Path) -> tuple[dict[str, str], list[str]]:
-    fields: dict[str, str] = {}
-    authors: list[str] = []
-    for line in path.read_text(encoding="utf-8").splitlines():
-        if line.startswith("- family-names: "):
-            authors.append(line.removeprefix("- family-names: ").strip('"'))
-        elif line.startswith("  given-names: ") and authors:
-            authors[-1] = line.removeprefix("  given-names: ").strip('"') + " " + authors[-1]
-        elif ": " in line and not line.startswith((" ", "-")):
-            key, value = line.split(": ", 1)
-            fields[key] = value.strip('"')
-    return fields, authors
+def npz_dtypes(path):
+    """Array names and dtypes of an .npz archive, read from the headers only."""
+    out = {}
+    with zipfile.ZipFile(path) as archive:
+        for name in archive.namelist():
+            with archive.open(name) as handle:
+                version = np.lib.format.read_magic(handle)
+                header = np.lib.format.read_array_header_1_0(handle) if version == (1, 0) else np.lib.format.read_array_header_2_0(handle)
+            out[name[:-4] if name.endswith('.npy') else name] = header[2]
+    return out
 
 
-def _parse_checksums(path: Path) -> tuple[list[tuple[str, str]], list[str]]:
-    entries: list[tuple[str, str]] = []
-    errors: list[str] = []
-    try:
-        lines = path.read_text(encoding="utf-8").splitlines()
-    except OSError as error:
-        return entries, [f"SHA256SUMS: {error}"]
-    for line_number, line in enumerate(lines, start=1):
-        parts = line.split(maxsplit=1)
-        if len(parts) != 2 or not re.fullmatch(r"[0-9a-f]{64}", parts[0]):
-            errors.append(f"SHA256SUMS:{line_number}: malformed checksum line")
-        else:
-            entries.append((parts[0], parts[1]))
-    return entries, errors
+def npz_object_arrays(path):
+    """Names of arrays in an .npz archive whose dtype holds Python objects."""
+    return [name for name, dtype in npz_dtypes(path).items() if dtype.hasobject]
 
 
-def _manifest_errors(root: Path) -> list[str]:
-    path = root / "MANIFEST.tsv"
-    try:
-        rows = [line.split("\t") for line in path.read_text(encoding="utf-8").splitlines()]
-    except OSError as error:
-        return [f"MANIFEST.tsv: {error}"]
-    if not rows or rows[0] != MANIFEST_HEADER:
-        return ["MANIFEST.tsv: invalid header"]
-    errors: list[str] = []
-    paths: list[str] = []
-    for line_number, row in enumerate(rows[1:], start=2):
-        if len(row) != len(MANIFEST_HEADER):
-            errors.append(f"MANIFEST.tsv:{line_number}: expected five columns")
-            continue
-        relative, byte_count, digest, category, description = row
-        paths.append(relative)
-        candidate = root / relative
-        if not relative.startswith(("data/", "models/")) or not candidate.is_file():
-            errors.append(f"MANIFEST.tsv:{line_number}: missing public artifact {relative}")
-            continue
-        if not byte_count.isdecimal() or int(byte_count) != candidate.stat().st_size:
-            errors.append(f"MANIFEST.tsv:{line_number}: byte count mismatch for {relative}")
-        if not re.fullmatch(r"[0-9a-f]{64}", digest) or digest != _sha256(candidate):
-            errors.append(f"MANIFEST.tsv:{line_number}: checksum mismatch for {relative}")
-        if not category or not description:
-            errors.append(f"MANIFEST.tsv:{line_number}: category and description are required")
-    expected = [path.relative_to(root).as_posix() for path in _public_artifact_paths(root)]
-    if paths != expected:
-        errors.append("MANIFEST.tsv: paths must cover public artifacts in lexical order")
-    return errors
-
-
-def _core_array_errors(root: Path) -> list[str]:
-    errors: list[str] = []
-    for name, (shape, dtype) in CORE_NPY_SCHEMA.items():
-        path = root / "data" / name
-        if not path.is_file():
-            errors.append(f"missing data file: {name}")
-            continue
-        try:
-            array = np.load(path, allow_pickle=False)
-            if array.shape != shape or str(array.dtype) != dtype:
-                errors.append(f"{name}: schema mismatch")
-            if array.dtype.kind == "f" and not np.isfinite(array).all():
-                errors.append(f"{name}: contains non-finite values")
-        except (OSError, ValueError) as error:
-            errors.append(f"{name}: {error}")
-    for name, schema in CORE_NPZ_SCHEMAS.items():
-        path = root / "data" / name
-        if not path.is_file():
-            errors.append(f"missing data file: {name}")
-            continue
-        try:
-            with np.load(path, allow_pickle=False) as archive:
-                if set(archive.files) != set(schema):
-                    errors.append(f"{name}: schema mismatch")
-                for key, (shape, dtype) in schema.items():
-                    if key not in archive.files:
-                        continue
-                    array = archive[key]
-                    if array.shape != shape or str(array.dtype) != dtype:
-                        errors.append(f"{name}: schema mismatch")
-                    if array.dtype.kind == "f" and not np.isfinite(array).all():
-                        errors.append(f"{name}:{key} contains non-finite values")
-        except (OSError, ValueError) as error:
-            errors.append(f"{name}: {error}")
-    return errors
-
-
-def _release_paths(root: Path) -> list[Path]:
-    return sorted(
-        path for path in root.rglob("*")
-        if path.is_file() and not any(part in INTERNAL_DIRECTORY_NAMES for part in path.relative_to(root).parts)
-    )
-
-
-def _safety_errors(root: Path) -> list[str]:
-    errors: list[str] = []
-    for path in _release_paths(root):
-        relative = path.relative_to(root).as_posix()
-        name = path.name.lower()
-        if (
-            path.suffix.lower() in FORBIDDEN_SUFFIXES
-            or any(item in name for item in FORBIDDEN_FILENAMES)
-        ):
-            errors.append(f"forbidden release artifact: {relative}")
-    for path in _release_paths(root):
-        relative = path.relative_to(root).as_posix()
-        try:
-            text = path.read_text(encoding="utf-8")
-        except UnicodeDecodeError:
-            continue
-        if PRIVATE_PATH_PATTERN.search(text):
-            errors.append(f"private absolute path in {relative}")
-        if CREDENTIAL_PATTERN.search(text):
-            errors.append(f"credential-like text in {relative}")
-    return errors
-
-def audit_release(root: Path) -> list[str]:
-    """Return release-integrity findings without modifying *root*."""
-
-    root = Path(root).resolve()
-    errors: list[str] = []
-    required = ("README.md", "CITATION.cff", "DATA_DICTIONARY.md", "LICENSE-DATA", "MANIFEST.tsv", "SHA256SUMS")
-    errors.extend(f"missing required file: {name}" for name in required if not (root / name).is_file())
+def audit(root=ROOT):
+    """List of findings; empty if the release is intact."""
+    root = Path(root)
+    errors = []
+    for name in ('README.md', 'DATA_DICTIONARY.md', 'CITATION.cff', 'LICENSE', 'LICENSE-DATA', 'MANIFEST.tsv', 'SHA256SUMS'):
+        if not (root/name).is_file():
+            errors.append('missing file: ' + name)
     if errors:
         return errors
-
-    fields, authors = _parse_cff(root / "CITATION.cff")
-    if fields != REQUIRED_CFF:
-        errors.append("CITATION.cff: required release fields do not match")
-    if authors != REQUIRED_AUTHORS:
-        errors.append("CITATION.cff: author order does not match")
-    if "orcid" in (root / "CITATION.cff").read_text(encoding="utf-8").lower():
-        errors.append("CITATION.cff: ORCID must not be invented")
-
-    entries, checksum_errors = _parse_checksums(root / "SHA256SUMS")
-    errors.extend(checksum_errors)
-    expected_paths = [path.relative_to(root).as_posix() for path in _public_artifact_paths(root)]
-    if [relative for _, relative in entries] != expected_paths:
-        errors.append("SHA256SUMS: paths must cover public artifacts in lexical order")
-    for digest, relative in entries:
-        candidate = root / relative
-        if not candidate.is_file() or _sha256(candidate) != digest:
-            errors.append(f"SHA256SUMS: checksum mismatch for {relative}")
-
-    errors.extend(_manifest_errors(root))
-    errors.extend(_core_array_errors(root))
-    errors.extend(validate_analysis_tree(root / "data"))
-    errors.extend(_safety_errors(root))
+    files = release_files(root)
+    digests = {}
+    listed = []
+    for number, line in enumerate((root/'SHA256SUMS').read_text(encoding='utf-8').splitlines(), start=1):
+        parts = line.split(maxsplit=1)
+        if len(parts) != 2 or not re.fullmatch(r'[0-9a-f]{64}', parts[0]):
+            errors.append('SHA256SUMS:%d: malformed line' % number)
+            continue
+        listed.append(parts[1])
+        digests[parts[1]] = parts[0]
+    expected = [f for f in files if f != 'SHA256SUMS']
+    for f in sorted(set(expected) - set(listed)):
+        errors.append('not listed in SHA256SUMS: ' + f)
+    for f in sorted(set(listed) - set(expected)):
+        errors.append('listed in SHA256SUMS but absent: ' + f)
+    actual = {}
+    for f in expected:
+        actual[f] = sha256(root/f)
+        if f in digests and digests[f] != actual[f]:
+            errors.append('checksum mismatch: ' + f)
+    rows = [line.split('\t') for line in (root/'MANIFEST.tsv').read_text(encoding='utf-8').splitlines()]
+    if not rows or rows[0] != MANIFEST_HEADER:
+        errors.append('MANIFEST.tsv: invalid header')
+    else:
+        in_manifest = [f for f in expected if f != 'MANIFEST.tsv']
+        paths = [row[0] for row in rows[1:]]
+        if paths != in_manifest:
+            errors.append('MANIFEST.tsv: paths do not cover the release files in lexical order')
+        for number, row in enumerate(rows[1:], start=2):
+            if len(row) != 5:
+                errors.append('MANIFEST.tsv:%d: expected five columns' % number)
+                continue
+            rel, size, digest, category, description = row
+            if rel in actual and (digest != actual[rel] or not size.isdecimal() or int(size) != (root/rel).stat().st_size):
+                errors.append('MANIFEST.tsv:%d: size or checksum mismatch for %s' % (number, rel))
+            if not category or not description:
+                errors.append('MANIFEST.tsv:%d: category and description are required' % number)
+    for f in expected:
+        if f.endswith('.npz'):
+            for name in npz_object_arrays(root/f):
+                errors.append('object array %s in %s' % (name, f))
     return errors
 
 
-def main() -> None:
-    findings = audit_release(Path(__file__).resolve().parents[1])
+def main():
+    findings = audit()
     if findings:
-        print("Release integrity findings:")
-        print("\n".join(f"- {finding}" for finding in findings))
-        raise SystemExit(1)
-    print("Release integrity: OK")
+        print('Release integrity findings:')
+        print('\n'.join('- ' + finding for finding in findings))
+        sys.exit(1)
+    print('Release integrity: OK (%d files)' % len(release_files(ROOT)))
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

@@ -1,0 +1,39 @@
+{
+ "runs": [
+  {
+   "seed": 20261022,
+   "updates": 24000,
+   "selected_step": 22750,
+   "validation_M": 0.0022151912562549114,
+   "seconds": 352.01816058158875
+  },
+  {
+   "seed": 20261023,
+   "updates": 24000,
+   "selected_step": 23750,
+   "validation_M": 0.0020482707768678665,
+   "seconds": 353.2594509124756
+  },
+  {
+   "seed": 20261024,
+   "updates": 24000,
+   "selected_step": 22750,
+   "validation_M": 0.002039483515545726,
+   "seconds": 348.89373874664307
+  },
+  {
+   "seed": 20261025,
+   "updates": 24000,
+   "selected_step": 23250,
+   "validation_M": 0.002064591273665428,
+   "seconds": 353.68049907684326
+  },
+  {
+   "seed": 20261026,
+   "updates": 24000,
+   "selected_step": 23750,
+   "validation_M": 0.0021002867724746466,
+   "seconds": 356.00760197639465
+  }
+ ]
+}

@@ -1,0 +1,66 @@
+{
+ "family": "insulated",
+ "stage": "first",
+ "variant": "A",
+ "n_inputs": 13,
+ "branch1": [
+  20,
+  100,
+  100,
+  100
+ ],
+ "branch2": [
+  13,
+  150,
+  150,
+  150,
+  150,
+  150,
+  100
+ ],
+ "trunk": [
+  64,
+  150,
+  150,
+  150,
+  150,
+  150,
+  150,
+  100
+ ],
+ "KH": 32,
+ "seeds": [
+  20261022,
+  20261023,
+  20261024,
+  20261025,
+  20261026
+ ],
+ "fields": [
+  "eps_m",
+  "slope_ss",
+  "enn_c0",
+  "enn_slope",
+  "N",
+  "M",
+  "T_c0",
+  "T_slope"
+ ],
+ "max_updates": 24000,
+ "check_every": 250,
+ "batch": 64,
+ "lr_drops": [
+  6000,
+  10000
+ ],
+ "E_Pa": 31500000000.0,
+ "nu": 0.2,
+ "alpha_per_K": 1e-05,
+ "moment_loss_weight": 1.0,
+ "selection": "lowest validation recovered-M MSE",
+ "n_train": 1400,
+ "n_validation": 150,
+ "device": "cpu",
+ "threads": 1,
+ "torch": "2.14.1"
+}

@@ -1,53 +1,39 @@
-"""DeepONet branch--trunk network used by the released profile operators.
+"""DeepONet branch-trunk network used by the released profile operators.
 
-The architecture is reproduced from the training code by Minglang Yin
-(`minglang_yin@brown.edu`) and kept intentionally small so that the released
-state dictionaries can be loaded without the authors' local source tree.
+The architecture follows the DIMON training code by Minglang Yin and co-workers
+(Yin et al., 2024, "A scalable framework for learning the geometry-dependent
+solution operators of partial differential equations"). It is kept small so
+that the released state dictionaries load without any other source tree.
 """
-
-from __future__ import annotations
-
 import torch
-from torch import nn
+import torch.nn as nn
 
 
-def _mlp(widths: list[int]) -> nn.Sequential:
-    layers: list[nn.Module] = []
-    for in_features, out_features in zip(widths[:-1], widths[1:]):
-        layers.append(nn.Sequential(nn.Linear(in_features, out_features), nn.Tanh()))
-    return nn.Sequential(*layers)
+def _stack(dims):
+    """Fully connected tanh layers; dims[0] is the input width."""
+    modules = []
+    in_channels = dims[0]
+    for h_dim in dims[1:]:
+        modules.append(nn.Sequential(nn.Linear(in_channels, h_dim), nn.Tanh()))
+        in_channels = h_dim
+    return nn.Sequential(*modules)
 
 
 class opnn(nn.Module):
-    """Two-branch DeepONet with an elementwise branch fusion."""
+    """Two branch networks (multiplied) and one trunk network; the output is their inner product."""
 
-    def __init__(
-        self,
-        branch1_dim: list[int],
-        branch2_dim: list[int],
-        trunk_dim: list[int],
-    ) -> None:
+    def __init__(self, branch1_dim, branch2_dim, trunk_dim):
         super().__init__()
         self.z_dim = trunk_dim[-1]
-        self._branch1 = _mlp(branch1_dim)
-        self._branch2 = _mlp(branch2_dim)
-        self._trunk = _mlp(trunk_dim)
+        self._branch1 = _stack(branch1_dim)
+        self._branch2 = _stack(branch2_dim)
+        self._trunk = _stack(trunk_dim)
 
-    def forward(
-        self,
-        branch1: torch.Tensor,
-        branch2: torch.Tensor,
-        trunk: torch.Tensor,
-    ) -> torch.Tensor:
-        branch_embedding = self._branch1(branch1) * self._branch2(branch2)
-        trunk_embedding = self._trunk(trunk)
-        return torch.einsum("ij,kj->ik", branch_embedding, trunk_embedding)
+    def forward(self, f, f_bc, x):
+        """f: (M, dim_f), f_bc: (M, dim_b), x: (N, dim_x); returns (M, N)."""
+        y_br = self._branch1(f)*self._branch2(f_bc)
+        y_tr = self._trunk(x)
+        return torch.einsum("ij,kj->ik", y_br, y_tr)
 
-    def loss(
-        self,
-        branch1: torch.Tensor,
-        branch2: torch.Tensor,
-        trunk: torch.Tensor,
-        target: torch.Tensor,
-    ) -> torch.Tensor:
-        return ((self(branch1, branch2, trunk) - target) ** 2).mean()
+    def loss(self, f, f_bc, x, y):
+        return ((self.forward(f, f_bc, x) - y)**2).mean()

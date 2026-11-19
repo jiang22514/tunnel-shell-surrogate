@@ -1,1 +1,0 @@
-"""Release-package regression tests."""

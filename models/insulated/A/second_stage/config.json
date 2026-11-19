@@ -1,0 +1,23 @@
+{
+ "family": "insulated",
+ "stage": "second",
+ "variant": "A",
+ "n_inputs": 83,
+ "width": 256,
+ "depth": 4,
+ "seeds": [
+  20261022,
+  20261023,
+  20261024,
+  20261025,
+  20261026
+ ],
+ "max_updates": 24000,
+ "lr_drops": [
+  6000,
+  10000
+ ],
+ "batch": 64,
+ "loss": "weighted MSE of dM/M_scale",
+ "device": "cpu"
+}
